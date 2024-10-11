@@ -4,9 +4,6 @@ import { Provider } from "react-redux"
 import App from "./App"
 import { store } from "./app/store"
 
-import "./index.scss"
-import "./sizes.scss"
-
 const container = document.getElementById("root")
 
 if (container) {
