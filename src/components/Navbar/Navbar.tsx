@@ -5,7 +5,12 @@ const Navbar = () => {
     return (
         <header>
             <div className="navbar">
+              <div className="first">
+                <span>Multi-play</span>
+              </div>
+              <div className="last">
 
+              </div>
             </div>
         </header>
     );

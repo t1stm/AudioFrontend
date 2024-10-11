@@ -2,7 +2,20 @@
 
 .navbar {
   display: flex;
+  flex-direction: row;
   width: 100%;
   height: 56px;
-  background: $color-surface-a10;
+  background: $color-surface-mixed-a10;
+  padding: 0 20px;
+}
+
+.first,
+.last {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.last {
+  justify-content: end;
 }

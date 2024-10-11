@@ -4,7 +4,8 @@ import React from "react";
 import "./App.scss"
 import Navbar from "./components/Navbar/Navbar"
 import Player from "./components/Player/Player"
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login"
 
 const App = () => {
   return (<>
@@ -17,6 +18,10 @@ const App = () => {
               <Route
                 path="/"
                 element={<Home />}
+              />
+              <Route
+                path="/login"
+                element={<Login />}
               />
             </Routes>
           </div>

@@ -1,1 +1,75 @@
 @import "../../colors";
+
+#player {
+  display: flex;
+  flex-direction: column;
+
+  width: 400px;
+  background: $color-surface-mixed-a10;
+  border-radius: 5px;
+
+  align-items: center;
+  gap: 20px;
+  padding: 20px 20px;
+}
+
+.player-image-box {
+  padding: 20px;
+  width: 100%;
+}
+
+.player-image {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.player-progress {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+
+  align-items: center;
+  overflow: hidden;
+}
+
+.progress-bar {
+  position: relative;
+  box-shadow: inset 10px 10px 10px -7px rgba(0,0,0,0.17),
+  10px 10px 10px -7px rgba(0,0,0,0.17);
+}
+
+.progress-bar-current,
+.progress-bar-buffered {
+  position: absolute;
+  height: 100%;
+  border-radius: 8px;
+  max-width: 100%;
+}
+
+.progress-bar-current {
+  background: linear-gradient($color-primary-a30, $color-primary-a40);
+}
+
+.progress-bar-buffered {
+  background: linear-gradient($color-primary-a10, $color-primary-a20);
+}
+
+.time {
+  font-size: 11px;
+  font-weight: bold;
+  color: $color-surface-mixed-a50;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.progress-bar {
+  display: flex;
+  border-radius: 8px;
+
+  width: 100%;
+  height: 8px;
+  background: $color-surface-mixed-a20;
+}
