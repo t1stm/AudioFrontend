@@ -1,18 +1,35 @@
 import "./Player.scss"
-import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import type { AppDispatch, RootState } from "../../state/store"
+
+function getTimeString(seconds: number) {
+  const date = new Date(0);
+  date.setSeconds(seconds);
+  return date.toISOString().substring(11,19);
+}
 
 const Player = () => {
-  let image = "http://localhost/Album_Covers/0c886945a45ec5da61f5073dbdf834d5aa8a8a33.jpg";
-  let current_time = "00:00:00";
-  let total_time = "00:01:00";
-  let title = "Title - Artist";
+  const { title, artist, currentSeconds, bufferedSeconds, totalSeconds, image } = useSelector((state: RootState) => {
+    return {
+      title: state.player.title,
+      artist: state.player.artist,
+      currentSeconds: state.player.currentSeconds,
+      bufferedSeconds: state.player.bufferedSeconds,
+      totalSeconds: state.player.totalSeconds,
+      image: state.player.image
+    }
+  });
+  const dispatch = useDispatch<AppDispatch>();
+
+  const current_time = getTimeString(currentSeconds);
+  const total_time = getTimeString(totalSeconds);
 
   let buffered_style = {
-    width: "50%"
+    width: `${100 * bufferedSeconds / totalSeconds}%`
   };
 
   let current_style = {
-    width: "10%"
+    width: `${100 * currentSeconds / totalSeconds}%`
   };
 
   return (
@@ -21,6 +38,7 @@ const Player = () => {
         <img className="player-image" src={image} alt="Playing Thumbnail"></img>
       </div>
       <span className="title">{title}</span>
+      <span className="artist">{artist}</span>
 
       <span className="player-progress">
         <span className="time current-time">{current_time}</span>

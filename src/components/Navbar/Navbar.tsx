@@ -6,10 +6,12 @@ const Navbar = () => {
         <header>
             <div className="navbar">
               <div className="first">
-                <span>Multi-play</span>
+
+              </div>
+              <div className="center">
+
               </div>
               <div className="last">
-
               </div>
             </div>
         </header>
