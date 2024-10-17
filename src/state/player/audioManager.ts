@@ -29,6 +29,10 @@ export default class AudioManager {
     return this.socketState === SocketState.Opened
   }
 
+  async send(message: string) {
+    this.socket?.send(message);
+  }
+
   close() {
     this.socket?.close();
   }

@@ -9,11 +9,11 @@ export interface PlayerProgress {
 
 export const PlayerProgressBar: React.FC<PlayerProgress> = (
   { currentSeconds, bufferedSeconds, totalSeconds }) => {
-  let buffered_style = {
+  const buffered_style = {
     width: `${(100 * bufferedSeconds) / totalSeconds}%`,
   }
 
-  let current_style = {
+  const current_style = {
     width: `${(100 * currentSeconds) / totalSeconds}%`,
   }
 
