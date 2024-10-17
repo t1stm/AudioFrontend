@@ -34,24 +34,17 @@ const playerSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(loadFileAsync.fulfilled, (state, action: PayloadAction<string>) => {
-      state.file = action.payload;
+    builder.addCase(previousTrackAsync.fulfilled, (state, action) => {
+      //
     });
   }
 });
 
-export const loadFileAsync = createAsyncThunk(
-  "player/loadFileAsync",
-  async (file: string) => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return file;
-});
-
 export const previousTrackAsync = createAsyncThunk(
-  "player/nextTrackAsync",
+  "player/previousTrackAsync",
   async () => {
     if (audioManager.isOpen()) {
-      // TODO
+      //
     }
   }
 )
@@ -60,9 +53,26 @@ export const nextTrackAsync = createAsyncThunk(
   "player/nextTrackAsync",
   async () => {
     if (audioManager.isOpen()) {
-      // TODO
+      //
     }
 
+  }
+)
+
+export const playPauseAsync = createAsyncThunk(
+  "player/playPauseAsync",
+  async () => {
+    if (audioManager.isOpen()) {
+      //
+    }
+
+  }
+)
+
+export const stopAsync = createAsyncThunk(
+  "player/stopAsync",
+  async () => {
+    audioManager.close()
   }
 )
 

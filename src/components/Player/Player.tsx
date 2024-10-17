@@ -1,6 +1,8 @@
 import "./Player.scss"
 import { useAppDispatch, useAppSelector } from "../../state/hooks"
 import type { AppDispatch, RootState } from "../../state/store"
+import { nextTrackAsync, playPauseAsync, previousTrackAsync, stopAsync } from "../../state/player/playerSlice"
+import { ProgressBar } from "../Progress Bar/ProgressBar"
 
 function getTimeString(seconds: number) {
   const date = new Date(0);
@@ -24,14 +26,6 @@ const Player = () => {
   const current_time = getTimeString(currentSeconds);
   const total_time = getTimeString(totalSeconds);
 
-  let buffered_style = {
-    width: `${100 * bufferedSeconds / totalSeconds}%`
-  };
-
-  let current_style = {
-    width: `${100 * currentSeconds / totalSeconds}%`
-  };
-
   return (
     <div id="player">
       <div className="player-image-box">
@@ -42,18 +36,18 @@ const Player = () => {
 
       <span className="player-progress">
         <span className="time current-time">{current_time}</span>
-        <div className="progress-bar">
-          <div className="progress-bar-buffered" style={buffered_style}></div>
-          <div className="progress-bar-current" style={current_style}></div>
-        </div>
+        <ProgressBar currentSeconds={currentSeconds}
+                     bufferedSeconds={bufferedSeconds}
+                     totalSeconds={totalSeconds}>
+        </ProgressBar>
         <span className="time total-time">{total_time}</span>
       </span>
 
       <div className="player-buttons">
-        <div className="stop-button"></div>
-        <div className="previous-button"></div>
-        <div className="play-pause-button"></div>
-        <div className="next-button"></div>
+        <div className="stop-button" onClick={() => dispatch(stopAsync())}></div>
+        <div className="previous-button" onClick={() => dispatch(previousTrackAsync())}></div>
+        <div className="play-pause-button" onClick={() => dispatch(playPauseAsync())}></div>
+        <div className="next-button" onClick={() => dispatch(nextTrackAsync())}></div>
         <div className="shuffle-button"></div>
       </div>
     </div>
