@@ -1,5 +1,5 @@
 import "./Player.scss"
-import { useDispatch, useSelector } from "react-redux"
+import { useAppDispatch, useAppSelector } from "../../state/hooks"
 import type { AppDispatch, RootState } from "../../state/store"
 
 function getTimeString(seconds: number) {
@@ -9,7 +9,7 @@ function getTimeString(seconds: number) {
 }
 
 const Player = () => {
-  const { title, artist, currentSeconds, bufferedSeconds, totalSeconds, image } = useSelector((state: RootState) => {
+  const { title, artist, currentSeconds, bufferedSeconds, totalSeconds, image } = useAppSelector((state: RootState) => {
     return {
       title: state.player.title,
       artist: state.player.artist,
@@ -19,7 +19,7 @@ const Player = () => {
       image: state.player.image
     }
   });
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch<AppDispatch>();
 
   const current_time = getTimeString(currentSeconds);
   const total_time = getTimeString(totalSeconds);
