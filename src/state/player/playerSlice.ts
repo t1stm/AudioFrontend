@@ -94,7 +94,7 @@ const playerSlice = createSlice({
         return;
       }
 
-      state.current = state.queue.objects[state.currentIndex - 1];
+      state.current = state.queue.objects[--state.currentIndex];
       state.currentSeconds = 0;
       state.bufferedSeconds = 0;
       state.playing = true;
@@ -114,7 +114,7 @@ const playerSlice = createSlice({
         return;
       }
 
-      state.current = state.queue.objects[state.currentIndex + 1];
+      state.current = state.queue.objects[++state.currentIndex];
       state.seekToSeconds = 0;
       state.playing = true;
     }).addCase(playPauseAsync.fulfilled, (state, action) => {
