@@ -2,7 +2,7 @@ import "./Player.scss"
 import { useAppDispatch, useAppSelector } from "../../state/hooks"
 import type { AppDispatch, RootState } from "../../state/store"
 import { nextTrackAsync, playPauseAsync, previousTrackAsync, stopAsync } from "../../state/player/playerSlice"
-import { ProgressBar } from "../Progress Bar/ProgressBar"
+import { PlayerProgressBar } from "../Progress Bar/PlayerProgressBar"
 
 function getTimeString(seconds: number) {
   const date = new Date(0);
@@ -36,10 +36,10 @@ const Player = () => {
 
       <span className="player-progress">
         <span className="time current-time">{current_time}</span>
-        <ProgressBar currentSeconds={currentSeconds}
-                     bufferedSeconds={bufferedSeconds}
-                     totalSeconds={totalSeconds}>
-        </ProgressBar>
+        <PlayerProgressBar currentSeconds={currentSeconds}
+                           bufferedSeconds={bufferedSeconds}
+                           totalSeconds={totalSeconds}>
+        </PlayerProgressBar>
         <span className="time total-time">{total_time}</span>
       </span>
 
