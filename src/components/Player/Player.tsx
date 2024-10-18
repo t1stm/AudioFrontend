@@ -58,11 +58,17 @@ const Player = () => {
       </span>
 
       <div className="player-buttons">
-        <img src="/static/icons/stop.png" className="stop-button" onClick={() => dispatch(stopAsync())}></img>
-        <img src="/static/icons/back.png" className="previous-button" onClick={() => dispatch(previousTrackAsync())}></img>
-        <img src={playing ? "/static/icons/play.png" : "/static/icons/pause.png"} className="play-pause-button" onClick={() => dispatch(playPauseAsync())}></img>
-        <img src="/static/icons/next.png" className="next-button" onClick={() => dispatch(nextTrackAsync())}></img>
-        <img src="/static/icons/shuffle.png" className="shuffle-button" onClick={() => dispatch(shuffleAsync())}></img>
+        <img src="/static/icons/stop.png" className="stop-button" alt="Stop button"
+             onClick={() => dispatch(stopAsync())}></img>
+        <img src="/static/icons/back.png" className="previous-button" alt="Previous button"
+             onClick={() => dispatch(previousTrackAsync())}></img>
+        <img src={playing ? "/static/icons/play.png" : "/static/icons/pause.png"}
+             className="play-pause-button" alt={playing ? "Play button" : "Pause button"}
+             onClick={() => dispatch(playPauseAsync())}></img>
+        <img src="/static/icons/next.png" className="next-button" alt="Next button"
+             onClick={() => dispatch(nextTrackAsync())}></img>
+        <img src="/static/icons/shuffle.png" className="shuffle-button" alt="Shuffle button"
+             onClick={() => dispatch(shuffleAsync())}></img>
       </div>
 
       <Audio playing={playing} seekTime={seekToSeconds} url={url}
