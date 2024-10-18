@@ -7,6 +7,7 @@ import {
   getPlatformNameFromIdentifier
 } from "./searchUtils"
 import { addToQueueAsync } from "../../state/player/playerSlice"
+import "./SearchResult.scss"
 
 const downloadEndpoint = "http://localhost:5226/Audio/Download"
 let codec = "Opus"
@@ -24,13 +25,13 @@ export const SearchResult:
   const info = getPlatformNameFromIdentifier(ID)
 
   return (
-    <div className="search-result">
+    <div key={ID} className="search-result">
       <img src={ThumbnailUrl ?? ""} alt="Thumbnail" />
       <div className="result-names">
         <span className="result-title">{Name}</span>
         <span className="result-artist">{Artist}</span>
       </div>
-      <div>
+      <div className="result-info">
         <div
           className="platform-blip"
           style={{

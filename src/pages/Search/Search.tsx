@@ -21,6 +21,7 @@ const Search = () => {
           type="text"
           placeholder="Search..."
           onChange={e => setKeywords(e.target.value)}
+          onKeyUp={e => e.key === "Enter" && dispatch(searchAsync(keywords))}
         />
         <button onClick={() => dispatch(searchAsync(keywords))}>Search</button>
       </div>

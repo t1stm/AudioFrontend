@@ -26,7 +26,7 @@ export function getPlatformNameFromIdentifier(id: string): PlatformInfo {
       color = "red";
       break;
 
-    case "file":
+    case "audio":
       prettyName = "Local";
       color = "blue";
       break;

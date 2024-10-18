@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import React from "react";
 
 import "./App.scss"
 import Navbar from "./components/Navbar/Navbar"
 import Player from "./components/Player/Player"
 import Search from "./pages/Search/Search";
 import Login from "./pages/Login/Login"
+import Queue from "./pages/Queue/Queue"
 
 const App = () => {
   return (<BrowserRouter>
@@ -14,6 +14,7 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<Search />} />
+            <Route path="/queue" element={<Queue />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>

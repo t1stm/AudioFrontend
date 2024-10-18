@@ -2,13 +2,14 @@ import type { AppDispatch, RootState } from "../../state/store"
 import "./Player.scss"
 import { useAppDispatch, useAppSelector } from "../../state/hooks"
 import {
+  endedAsync,
   nextTrackAsync,
   playPauseAsync,
   previousTrackAsync,
   shuffleAsync,
   stopAsync,
   updateBuffer,
-  updateTime,
+  updateTime
 } from "../../state/player/playerSlice"
 import { PlayerProgressBar } from "./Progress Bar/PlayerProgressBar"
 import { Audio } from "./Audio"
@@ -30,6 +31,7 @@ const Player = () => {
     playing,
     url,
     seekToSeconds,
+    volume
   } = useAppSelector((state: RootState) => {
     return {
       title: state.player.current.title,
@@ -42,6 +44,7 @@ const Player = () => {
       bufferedSeconds: state.player.bufferedSeconds,
       playing: state.player.playing,
       seekToSeconds: state.player.seekToSeconds,
+      volume: state.player.volume
     }
   })
   const dispatch = useAppDispatch<AppDispatch>()
@@ -59,7 +62,7 @@ const Player = () => {
     },
     {
       name: playing ? "play" : "pause",
-      clickAction: () => dispatch(playPauseAsync()),
+      clickAction: () => dispatch(playPauseAsync(null)),
     },
     {
       name: "next",
@@ -74,10 +77,12 @@ const Player = () => {
   return (
     <div id="player">
       <div className="player-image-box">
-        <img className="player-image" src={image} alt="Playing Thumbnail"></img>
+        <img className="player-image" src={image} alt=""></img>
       </div>
-      <span className="title">{title}</span>
-      <span className="artist">{artist}</span>
+      <div className="player-info">
+        <span className="title">{title}</span>
+        <span className="artist">{artist}</span>
+      </div>
 
       <span className="player-progress">
         <span className="time current-time">{currentTime}</span>
@@ -90,9 +95,10 @@ const Player = () => {
       </span>
 
       <div className="player-buttons">
-        {buttons.map(({name, clickAction}) => {
+        {buttons.map(({ name, clickAction }) => {
           return (
             <img
+              key={name}
               src={`/static/icons/${name}.png`}
               className={`${name}-button`}
               alt={`${name} button`}
@@ -106,6 +112,7 @@ const Player = () => {
         playing={playing}
         seekTime={seekToSeconds}
         url={url}
+        volume={volume}
         onTimeUpdate={event => {
           const player = event.currentTarget
           const time = player.currentTime
@@ -119,9 +126,12 @@ const Player = () => {
           const end = buffer.end(buffer.length - 1)
           dispatch(updateBuffer({ buffer: end }))
         }}
-        onLoadedData={event => {
-          const player = event.currentTarget
-          dispatch(updateBuffer({ buffer: player.duration }))
+        onCanPlayThrough={() => {
+          dispatch(updateBuffer({ buffer: totalSeconds }))
+        }}
+
+        onEnded={() => {
+          dispatch(endedAsync())
         }}
       />
     </div>

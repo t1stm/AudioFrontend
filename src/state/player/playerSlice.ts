@@ -11,10 +11,11 @@ interface PlayerState {
   current: QueueObject
   currentIndex: number | null
 
-  playing: boolean
+  playing: boolean | null
   currentSeconds: number
   bufferedSeconds: number
-  seekToSeconds: number
+  seekToSeconds: number | null
+  volume: number
 }
 
 const defaultCurrent: QueueObject = {
@@ -30,10 +31,11 @@ const initialState: PlayerState = {
     ...defaultCurrent,
   },
   currentIndex: null,
-  playing: false,
+  playing: null,
   currentSeconds: 10,
   bufferedSeconds: 30,
-  seekToSeconds: 0,
+  seekToSeconds: null,
+  volume: 0.5,
   queue: {
     objects: [],
   },
@@ -47,7 +49,8 @@ const playerSlice = createSlice({
       state.currentSeconds = action.payload.time
     },
     updateBuffer: (state, action: PayloadAction<{ buffer: number }>) => {
-      state.bufferedSeconds = action.payload.buffer
+      if (action.payload.buffer > state.bufferedSeconds)
+        state.bufferedSeconds = action.payload.buffer
     },
   },
   extraReducers: builder => {
@@ -85,6 +88,7 @@ const playerSlice = createSlice({
       .addCase(previousTrackAsync.fulfilled, (state, action) => {
         if (action.payload.isWebSocket) return
         if (state.queue.objects.length < 1) return
+        state.playing = true
 
         if (state.currentIndex == null) {
           state.current = state.queue.objects[0]
@@ -100,11 +104,11 @@ const playerSlice = createSlice({
         state.current = state.queue.objects[--state.currentIndex]
         state.currentSeconds = 0
         state.bufferedSeconds = 0
-        state.playing = true
       })
       .addCase(nextTrackAsync.fulfilled, (state, action) => {
         if (action.payload.isWebSocket) return
         if (state.queue.objects.length < 1) return
+        state.playing = true
 
         if (state.currentIndex == null) {
           state.current = state.queue.objects[0]
@@ -119,10 +123,17 @@ const playerSlice = createSlice({
 
         state.current = state.queue.objects[++state.currentIndex]
         state.seekToSeconds = 0
-        state.playing = true
       })
       .addCase(playPauseAsync.fulfilled, (state, action) => {
         if (action.payload.isWebSocket) return
+        if (action.payload.playing != null) {
+          state.playing = action.payload.playing
+          return
+        }
+        if (state.playing == null) {
+          state.playing = false
+          return
+        }
         state.playing = !state.playing
       })
       .addCase(stopAsync.fulfilled, (state, action) => {
@@ -134,10 +145,25 @@ const playerSlice = createSlice({
       })
       .addCase(
         addToQueueAsync.fulfilled,
-        (state, action: PayloadAction<QueueObject | null>) => {
+        (state, action) => {
           if (!action.payload) return
           state.queue.objects.push(action.payload)
         },
+      )
+      .addCase(
+        endedAsync.fulfilled,
+        (state, action) => {
+          if (action.payload.isWebSocket) return
+          if (state.currentIndex == null) return
+
+          if (state.currentIndex + 1 >= state.queue.objects.length) {
+            return
+          }
+
+          state.current = state.queue.objects[++state.currentIndex]
+          state.seekToSeconds = 0
+          state.playing = null
+        }
       )
   },
 })
@@ -188,16 +214,18 @@ export const nextTrackAsync = createAsyncThunk(
 
 export const playPauseAsync = createAsyncThunk(
   "player/playPauseAsync",
-  async (): Promise<PlayerThunk> => {
+  async (playing: boolean | null): Promise<PlayerThunk & { playing: boolean | null }> => {
     if (audioManager.isOpen()) {
       await audioManager.send("")
       return {
         isWebSocket: true,
+        playing: null
       }
     }
 
     return {
       isWebSocket: false,
+      playing: playing
     }
   },
 )
@@ -232,6 +260,22 @@ export const shuffleAsync = createAsyncThunk(
       isWebSocket: false,
     }
   },
+)
+
+export const endedAsync = createAsyncThunk(
+  "player/endAsync",
+  async (): Promise<PlayerThunk> => {
+    if (audioManager.isOpen()) {
+      await audioManager.send("")
+      return {
+        isWebSocket: true,
+      }
+    }
+
+    return {
+      isWebSocket: false,
+    }
+  }
 )
 
 export const { updateTime, updateBuffer } = playerSlice.actions

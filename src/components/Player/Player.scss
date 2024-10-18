@@ -54,3 +54,8 @@
   cursor: pointer;
   filter: invert(1);
 }
+
+.player-info {
+  display: grid;
+  gap: 5px;
+}
