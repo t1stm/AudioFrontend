@@ -8,12 +8,12 @@ const Navbar = () => {
   return (
     <header>
       <span>Audio API</span>
-      <CustomNavLink href="/" linkText="Search" />
-      <CustomNavLink href="/queue" linkText="Queue" />
-      <CustomNavLink href="/settings" linkText="Settings" />
+      <CustomNavLink to="" linkText="Search" />
+      <CustomNavLink to="/queue" linkText="Queue" />
+      <CustomNavLink to="/settings" linkText="Settings" />
       {loggedIn ?
         <UserProfile /> :
-        <CustomNavLink href="/login" linkText="Login" className="login-link" />
+        <CustomNavLink to="/login" linkText="Login" className="login-link" />
       }
     </header>
   );

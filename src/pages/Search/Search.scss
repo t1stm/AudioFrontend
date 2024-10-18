@@ -35,9 +35,10 @@
   align-items: center;
   gap: 10px;
   padding: 10px;
-  height: 80px;
+  min-height: 80px;
   background-color: $color-surface-mixed-a10;
   overflow: hidden;
+  border-radius: 5px;
 }
 
 .result-names {
@@ -69,11 +70,12 @@
 }
 
 .platform-blip {
-  font-size: 11px;
+  font-size: 9px;
   font-weight: bold;
   border-radius: 5px;
   background-color: $color-surface-mixed-a30;
-  padding: 4px;
+  padding: 2px;
+  text-align: center;
 }
 
 .search-result > img {

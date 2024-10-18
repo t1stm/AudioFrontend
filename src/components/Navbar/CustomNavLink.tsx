@@ -1,17 +1,17 @@
 import { NavLink } from "react-router-dom"
 
 interface CustomNavLinkProps {
-  href: string;
+  to: string;
   linkText: string;
   className?: string;
 }
 
 const CustomNavLink =
-  ({href, linkText, className}: CustomNavLinkProps) => {
+  ({to, linkText, className}: CustomNavLinkProps) => {
   const classes = `${className ?? ""} link `;
 
   return (
-    <NavLink  to={href} className={
+    <NavLink to={to} className={
       ({isActive}) => isActive ? classes + "link-active" : classes}>
       {linkText}
     </NavLink>

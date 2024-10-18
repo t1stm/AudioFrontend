@@ -33,14 +33,16 @@ body {
 
 #app {
   display: flex;
-  flex: 1;
   padding: 10px;
   gap: 10px;
+
+  height: 100%;
 }
 
 #app-page {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   width: 100%;
   gap: 20px;
 }
