@@ -10,7 +10,7 @@ interface Queue {
 }
 
 interface PlayerThunk {
-  executeDisconnected: boolean
+  isWebSocket: boolean
 }
 
 interface PlayerState {
@@ -59,28 +59,37 @@ const playerSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(shuffleAsync.fulfilled, (state, action: PayloadAction<PlayerThunk>) => {
-      if (!action.payload.executeDisconnected) return;
+      // handle if shuffle is handled by a server
+      if (!action.payload.isWebSocket) return;
 
+      // gets the current queue objects and the current id
       const queueObjects = state.queue.objects;
       const currentIndex = state.currentIndex ?? 0;
 
+      // do nothing if there are no objects in the queue
+      if (queueObjects.length < 1) return;
+
+      // removes the current playing object, to put it in later as the first
       const current = queueObjects.slice(currentIndex, currentIndex + 1);
       queueObjects.splice(currentIndex, 1);
 
-      // shuffle algorithm
+      // shuffle algorithm using Math.random
       for (let i = queueObjects.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [queueObjects[i], queueObjects[j]] = [queueObjects[j], queueObjects[i]];
       }
 
+      // gets the first object that is confirmed to exist due to a check above
       const firstElement = current[0];
       queueObjects.splice(0, 0, firstElement); // current[0] is implicitly one item as specified above when getting it.
 
+      // set the state to work with the shuffled queue
       state.currentIndex = 0;
       state.queue.objects = queueObjects;
       state.current = firstElement;
+
     }).addCase(previousTrackAsync.fulfilled, (state, action: PayloadAction<PlayerThunk>) => {
-      if (!action.payload.executeDisconnected) return;
+      if (action.payload.isWebSocket) return;
       if (state.queue.objects.length < 1) return;
 
       if (state.currentIndex == null) {
@@ -100,7 +109,7 @@ const playerSlice = createSlice({
       state.playing = true;
 
     }).addCase(nextTrackAsync.fulfilled, (state, action) => {
-      if (!action.payload.executeDisconnected) return;
+      if (action.payload.isWebSocket) return;
       if (state.queue.objects.length < 1) return;
 
       if (state.currentIndex == null) {
@@ -117,15 +126,18 @@ const playerSlice = createSlice({
       state.current = state.queue.objects[++state.currentIndex];
       state.seekToSeconds = 0;
       state.playing = true;
+
     }).addCase(playPauseAsync.fulfilled, (state, action) => {
-      if (!action.payload.executeDisconnected) return;
+      if (action.payload.isWebSocket) return;
       state.playing = !state.playing;
+
     }).addCase(stopAsync.fulfilled, (state, action) => {
-      if (!action.payload.executeDisconnected) return;
+      if (action.payload.isWebSocket) return;
 
       state.playing = false;
       state.seekToSeconds = 0;
       state.currentIndex = null;
+
     }).addCase(addToQueueAsync.fulfilled, (state, action: PayloadAction<QueueObject | null>) => {
       if (!action.payload) return;
       state.queue.objects.push(action.payload);
@@ -151,60 +163,60 @@ export const previousTrackAsync = createAsyncThunk(
     if (audioManager.isOpen()) {
       await audioManager.send("");
       return {
-        executeDisconnected: false
+        isWebSocket: true
       };
     }
 
     return {
-      executeDisconnected: true
+      isWebSocket: false
     };
   },
 )
 
 export const nextTrackAsync = createAsyncThunk(
   "player/nextTrackAsync",
-  async () => {
+  async (): Promise<PlayerThunk> => {
     if (audioManager.isOpen()) {
       await audioManager.send("");
       return {
-        executeDisconnected: false
+        isWebSocket: true
       };
     }
 
     return {
-      executeDisconnected: true
+      isWebSocket: false
     };
   },
 )
 
 export const playPauseAsync = createAsyncThunk(
   "player/playPauseAsync",
-  async () => {
+  async (): Promise<PlayerThunk> => {
     if (audioManager.isOpen()) {
       await audioManager.send("");
       return {
-        executeDisconnected: false
+        isWebSocket: true
       };
     }
 
     return {
-      executeDisconnected: true
+      isWebSocket: false
     };
   },
 )
 
 export const stopAsync = createAsyncThunk(
   "player/stopAsync",
-  async () => {
+  async (): Promise<PlayerThunk> => {
     if (audioManager.isOpen()) {
       await audioManager.send("");
       return {
-        executeDisconnected: false
+        isWebSocket: true
       };
     }
 
     return {
-      executeDisconnected: true
+      isWebSocket: false
     };
   }
 )
@@ -215,12 +227,12 @@ export const shuffleAsync = createAsyncThunk(
     if (audioManager.isOpen()) {
       await audioManager.send("");
       return {
-        executeDisconnected: false
+        isWebSocket: true
       };
     }
 
     return {
-      executeDisconnected: true
+      isWebSocket: false
     };
   },
 )
