@@ -58,7 +58,7 @@ const playerSlice = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(shuffleAsync.fulfilled, (state, action: PayloadAction<PlayerThunk>) => {
+    builder.addCase(shuffleAsync.fulfilled, (state, action) => {
       // handle if shuffle is handled by a server
       if (!action.payload.isWebSocket) return;
 
@@ -88,7 +88,7 @@ const playerSlice = createSlice({
       state.queue.objects = queueObjects;
       state.current = firstElement;
 
-    }).addCase(previousTrackAsync.fulfilled, (state, action: PayloadAction<PlayerThunk>) => {
+    }).addCase(previousTrackAsync.fulfilled, (state, action) => {
       if (action.payload.isWebSocket) return;
       if (state.queue.objects.length < 1) return;
 
