@@ -84,8 +84,12 @@ const Player = () => {
                if (buffer.length < 1) return;
 
                const end = buffer.end(buffer.length - 1);
-               console.log("Buffer End: ", end);
                dispatch(updateBuffer({ buffer: end }));
+             }}
+
+             onLoadedData={(event) => {
+               const player = event.currentTarget;
+               dispatch(updateBuffer({ buffer: player.duration }));
              }}
       />
     </div>
@@ -97,6 +101,7 @@ interface AudioParams {
   playing: boolean
   seekTime: number
   onTimeUpdate: (event: SyntheticEvent<HTMLAudioElement>) => void
+  onLoadedData: (event: SyntheticEvent<HTMLAudioElement>) => void,
   onBuffer: (event: SyntheticEvent<HTMLAudioElement>) => void
 }
 
@@ -106,6 +111,7 @@ const Audio: React.FC<AudioParams> = (
     playing,
     seekTime,
     onTimeUpdate,
+    onLoadedData,
     onBuffer
   }) => {
   const ref = useRef<null | HTMLAudioElement>(null);
@@ -120,7 +126,8 @@ const Audio: React.FC<AudioParams> = (
     <audio ref={ref}
            src={url}
            onTimeUpdate={onTimeUpdate}
-           onProgress={onBuffer}>
+           onProgress={onBuffer}
+           onCanPlayThrough={onLoadedData}>
     </audio>
   )
 }

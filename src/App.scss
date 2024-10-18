@@ -38,6 +38,18 @@ body {
   gap: 10px;
 }
 
+#app-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}
+
+.pages {
+  display: flex;
+  width: 100%;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
   monospace;

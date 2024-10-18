@@ -20,3 +20,49 @@ $color-surface-mixed-a40: #767277;
 $color-surface-mixed-a50: #908d90;
 
 $box-shadow-generic: inset 10px 10px 10px -7px rgba(0,0,0,0.17), 10px 10px 10px -7px rgba(0,0,0,0.17);
+
+button {
+  height: 100%;
+  width: 80px;
+  padding: 10px;
+  border-radius: 5px;
+
+  background: $color-primary-a10;
+  border: none;
+  color: white;
+  box-shadow: $box-shadow-generic;
+  cursor: pointer;
+  transition: background 133ms, outline 133ms;
+  font-weight: bold;
+}
+
+input {
+  appearance: none;
+  border: $color-surface-mixed-a20 2px solid;
+  outline: none;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: $box-shadow-generic;
+  background: $color-surface-mixed-a10;
+  color: white;
+  transition: outline 133ms;
+  font-weight: bold;
+}
+
+input:focus,
+input:hover,
+input:focus-within, {
+  outline: $color-primary-a50 2px solid;
+}
+
+input:empty {
+  font-weight: normal;
+}
+
+button:hover {
+  background: $color-primary-a20;
+}
+
+button:focus-within {
+  outline: $color-primary-a50 2px solid;
+}

@@ -1,33 +1,27 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import React from "react";
 
 import "./App.scss"
 import Navbar from "./components/Navbar/Navbar"
 import Player from "./components/Player/Player"
-import Home from "./pages/Home/Home";
+import Search from "./pages/Search/Search";
 import Login from "./pages/Login/Login"
 
 const App = () => {
-  return (<>
-      <Navbar />
+  return (<BrowserRouter>
       <div id="app">
-        <Player />
-        <BrowserRouter>
-          <div className="pages">
-            <Routes>
-              <Route
-                path="/"
-                element={<Home />}
-              />
-              <Route
-                path="/login"
-                element={<Login />}
-              />
-            </Routes>
-          </div>
-        </BrowserRouter>
+        <div id="app-page">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Search />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </div>
+        <div className="sidebar">
+          <Player />
+        </div>
       </div>
-    </>
+    </BrowserRouter>
   )
 }
 

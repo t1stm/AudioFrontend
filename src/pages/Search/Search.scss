@@ -1,0 +1,87 @@
+@import "../../colors";
+
+.search {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: auto;
+  padding: 2px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+}
+
+.search-bar > input {
+  width: 66%;
+  height: 100%;
+  min-width: 100px;
+  max-width: 500px;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 10px;
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  height: 80px;
+  background-color: $color-surface-mixed-a10;
+  overflow: hidden;
+}
+
+.result-names {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 100%;
+}
+
+.result-title {
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  height: 100%;
+}
+
+.result-artist {
+  color: $color-surface-mixed-a50;
+  font-weight: bold;
+  font-size: 11px;
+  height: 100%;
+}
+
+.result-duration {
+  font-size: 12px;
+  font-weight: bold;
+  color: $color-surface-mixed-a50;
+}
+
+.platform-blip {
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: $color-surface-mixed-a30;
+  padding: 4px;
+}
+
+.search-result > img {
+  height: 100%;
+}
+
+.search-result > button {
+  white-space: nowrap;
+  width: fit-content;
+  height: fit-content;
+}

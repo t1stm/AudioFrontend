@@ -13,7 +13,7 @@ interface PlayerThunk {
   executeDisconnected: boolean
 }
 
-interface PlayerSlice {
+interface PlayerState {
   queue: Queue
   current: QueueObject
   currentIndex: number | null
@@ -32,7 +32,7 @@ const defaultCurrent: QueueObject = {
   url: "",
 }
 
-const initialState: PlayerSlice = {
+const initialState: PlayerState = {
   current: {
     ...defaultCurrent,
   },

@@ -3,9 +3,11 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
 
 import playerReducer from "./player/playerSlice";
+import searchReducer from "./search/searchSlice";
 
 const rootReducer = combineReducers({
-  player: playerReducer
+  player: playerReducer,
+  search: searchReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>
