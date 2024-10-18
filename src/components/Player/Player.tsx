@@ -58,23 +58,23 @@ const Player = () => {
       </span>
 
       <div className="player-buttons">
-        <div className="stop-button" onClick={() => dispatch(stopAsync())}></div>
-        <div className="previous-button" onClick={() => dispatch(previousTrackAsync())}></div>
-        <div className="play-pause-button" onClick={() => dispatch(playPauseAsync())}></div>
-        <div className="next-button" onClick={() => dispatch(nextTrackAsync())}></div>
-        <div className="shuffle-button" onClick={() => dispatch(shuffleAsync())}></div>
+        <img src="/static/icons/stop.png" className="stop-button" onClick={() => dispatch(stopAsync())}></img>
+        <img src="/static/icons/back.png" className="previous-button" onClick={() => dispatch(previousTrackAsync())}></img>
+        <img src={playing ? "/static/icons/play.png" : "/static/icons/pause.png"} className="play-pause-button" onClick={() => dispatch(playPauseAsync())}></img>
+        <img src="/static/icons/next.png" className="next-button" onClick={() => dispatch(nextTrackAsync())}></img>
+        <img src="/static/icons/shuffle.png" className="shuffle-button" onClick={() => dispatch(shuffleAsync())}></img>
       </div>
 
       <Audio playing={playing} seekTime={seekToSeconds} url={url}
              onTimeUpdate={(event) => {
-               const player = event.currentTarget;
-               const time = player.currentTime;
-               dispatch(updateTime({ time: time }));
+               const player = event.currentTarget
+               const time = player.currentTime
+               dispatch(updateTime({ time: time }))
              }}
 
              onBuffer={(event) => {
-               const player = event.currentTarget;
-               const buffer = player.buffered;
+               const player = event.currentTarget
+               const buffer = player.buffered
                if (buffer.length < 1) return;
 
                const end = buffer.end(buffer.length - 1);

@@ -45,13 +45,13 @@
 
 .player-buttons {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
-.player-buttons > div {
+.player-buttons > img {
   display: flex;
   width: 48px;
   height: 48px;
-  background-color: white;
   cursor: pointer;
+  filter: invert(1);
 }
