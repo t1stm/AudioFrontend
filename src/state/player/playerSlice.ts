@@ -19,10 +19,10 @@ interface PlayerState {
 }
 
 const defaultCurrent: QueueObject = {
-  title: "Title",
-  artist: "Artist",
-  totalSeconds: 60,
-  image: "/static/0c886945a45ec5da61f5073dbdf834d5aa8a8a33.jpg",
+  title: "Empty",
+  artist: "Start Playing Something",
+  totalSeconds: 0,
+  image: "",
   url: "",
 }
 
@@ -31,9 +31,9 @@ const initialState: PlayerState = {
     ...defaultCurrent,
   },
   currentIndex: null,
-  playing: null,
-  currentSeconds: 10,
-  bufferedSeconds: 30,
+  playing: false,
+  currentSeconds: 0,
+  bufferedSeconds: 0,
   seekToSeconds: null,
   volume: 0.5,
   queue: {
@@ -55,6 +55,28 @@ const playerSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+      .addCase(
+        addToQueueAsync.fulfilled,
+        (state, action) => {
+          if (!action.payload) return
+          state.queue.objects.push(action.payload)
+
+          if (state.currentIndex == null) {
+            // ensured by the push above that there are at least one objects in the queue
+            state.currentIndex = 0
+            state.current = state.queue.objects[0]
+            state.playing = true
+            return
+          }
+
+          // handle when song is finished to play the next one added
+          if (state.currentIndex + 2 === state.queue.objects.length && Math.abs(state.currentSeconds - state.current.totalSeconds) < 1) {
+            state.current = state.queue.objects[++state.currentIndex]
+            state.playing = true
+          }
+          return
+        },
+      )
       .addCase(shuffleAsync.fulfilled, (state, action) => {
         // handle if shuffle is handled by a server
         if (!action.payload.isWebSocket) return
@@ -88,7 +110,7 @@ const playerSlice = createSlice({
       .addCase(previousTrackAsync.fulfilled, (state, action) => {
         if (action.payload.isWebSocket) return
         if (state.queue.objects.length < 1) return
-        state.playing = true
+        state.playing = null;
 
         if (state.currentIndex == null) {
           state.current = state.queue.objects[0]
@@ -101,6 +123,7 @@ const playerSlice = createSlice({
           return
         }
 
+        state.playing = true;
         state.current = state.queue.objects[--state.currentIndex]
         state.currentSeconds = 0
         state.bufferedSeconds = 0
@@ -108,7 +131,7 @@ const playerSlice = createSlice({
       .addCase(nextTrackAsync.fulfilled, (state, action) => {
         if (action.payload.isWebSocket) return
         if (state.queue.objects.length < 1) return
-        state.playing = true
+        state.playing = null;
 
         if (state.currentIndex == null) {
           state.current = state.queue.objects[0]
@@ -121,6 +144,7 @@ const playerSlice = createSlice({
           return
         }
 
+        state.playing = true
         state.current = state.queue.objects[++state.currentIndex]
         state.seekToSeconds = 0
       })
@@ -144,17 +168,11 @@ const playerSlice = createSlice({
         state.currentIndex = null
       })
       .addCase(
-        addToQueueAsync.fulfilled,
-        (state, action) => {
-          if (!action.payload) return
-          state.queue.objects.push(action.payload)
-        },
-      )
-      .addCase(
         endedAsync.fulfilled,
         (state, action) => {
           if (action.payload.isWebSocket) return
           if (state.currentIndex == null) return
+          state.playing = null
 
           if (state.currentIndex + 1 >= state.queue.objects.length) {
             return
@@ -162,7 +180,7 @@ const playerSlice = createSlice({
 
           state.current = state.queue.objects[++state.currentIndex]
           state.seekToSeconds = 0
-          state.playing = null
+          state.playing = true
         }
       )
   },

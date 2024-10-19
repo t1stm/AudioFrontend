@@ -9,7 +9,7 @@
   background: $color-surface-mixed-a20;
 }
 
-.progress-bar:hover > .progress-bar-current > .playing-blip {
+.progress-bar:hover > .playing-blip {
   background-color: white;
   box-shadow: $box-shadow-generic;
 }
@@ -37,10 +37,11 @@
 }
 
 .playing-blip {
-  right: 0;
+  left: 0;
   position: absolute;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   transition: background-color 133ms;
+  transform: translateX(-50%);
 }

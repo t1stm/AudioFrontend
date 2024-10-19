@@ -24,9 +24,11 @@ export const SearchResult:
   const dispatch = useAppDispatch<AppDispatch>()
   const info = getPlatformNameFromIdentifier(ID)
 
+  const thumbnail = ThumbnailUrl !== null && ThumbnailUrl.length !== 0 ? ThumbnailUrl : "/static/images/empty.png"
+
   return (
     <div key={ID} className="search-result">
-      <img src={ThumbnailUrl ?? ""} alt="Thumbnail" />
+      <img src={thumbnail} alt="Thumbnail" />
       <div className="result-names">
         <span className="result-title">{Name}</span>
         <span className="result-artist">{Artist}</span>
@@ -49,7 +51,7 @@ export const SearchResult:
               title: Name ?? "",
               artist: Artist ?? "",
               totalSeconds: convertTimeSpanStringToSeconds(Duration),
-              image: ThumbnailUrl ?? "",
+              image: thumbnail,
               url: `${downloadEndpoint}/${codec}/${bitrate}?id=${encodeURI(ID)}`,
             }),
           )

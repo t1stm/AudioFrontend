@@ -13,12 +13,7 @@ import {
 } from "../../state/player/playerSlice"
 import { PlayerProgressBar } from "./Progress Bar/PlayerProgressBar"
 import { Audio } from "./Audio"
-
-function getTimeString(seconds: number) {
-  const date = new Date(0)
-  date.setSeconds(seconds)
-  return date.toISOString().substring(11, 19)
-}
+import { getTimeString } from "./playerUtils"
 
 const Player = () => {
   const {
@@ -33,11 +28,16 @@ const Player = () => {
     seekToSeconds,
     volume
   } = useAppSelector((state: RootState) => {
+    let image = state.player.current.image
+    if (image.length === 0) {
+      image = "/static/images/empty.png"
+    }
+
     return {
       title: state.player.current.title,
       artist: state.player.current.artist,
       totalSeconds: state.player.current.totalSeconds,
-      image: state.player.current.image,
+      image: image,
       url: state.player.current.url,
 
       currentSeconds: state.player.currentSeconds,
@@ -76,12 +76,14 @@ const Player = () => {
 
   return (
     <div id="player">
-      <div className="player-image-box">
-        <img className="player-image" src={image} alt=""></img>
-      </div>
-      <div className="player-info">
-        <span className="title">{title}</span>
-        <span className="artist">{artist}</span>
+      <div className="player-song-info">
+        <div className="player-image-box">
+          <img className="player-image" src={image} alt=""></img>
+        </div>
+        <div className="player-info">
+          <span className="title">{title}</span>
+          <span className="artist">{artist}</span>
+        </div>
       </div>
 
       <span className="player-progress">
@@ -129,8 +131,8 @@ const Player = () => {
         onCanPlayThrough={() => {
           dispatch(updateBuffer({ buffer: totalSeconds }))
         }}
-
         onEnded={() => {
+          console.log("Ended current audio.")
           dispatch(endedAsync())
         }}
       />

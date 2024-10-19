@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { SearchObject } from "./searchObject"
+import type { SearchObject } from "./searchObject"
 
 const searchEndpoint = "http://localhost:5226/Audio/Search";
 
@@ -32,6 +32,7 @@ export const searchAsync = createAsyncThunk(
     const encoded = encodeURI(term);
     const response = await fetch(`${searchEndpoint}?query=${encoded}`);
     const objects = await response.json();
+    if (objects['status'] === 404) return [];
 
     return objects as SearchObject[];
   },
