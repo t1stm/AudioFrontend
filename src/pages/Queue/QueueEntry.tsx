@@ -4,16 +4,17 @@ import "./QueueEntry.scss"
 
 interface QueueEntryProps {
   queueObject: QueueObject,
-  index: number
+  index: number,
+  isCurrent: boolean
 }
 
 const QueueEntry: React.FC<QueueEntryProps> = (props: QueueEntryProps) => {
-  const { queueObject, index } = props
+  const { queueObject, index, isCurrent } = props
   const { title, artist, totalSeconds, image, url } = queueObject
 
   return (
     <div className="queue-object">
-      <span>#{index}</span>
+      <span>#{index}{isCurrent ? " (Current)" : ""}</span>
       <span>{title}</span>
       <span>{artist}</span>
       <span>{totalSeconds}</span>

@@ -47,7 +47,7 @@ export const Audio: React.FC<AudioParams> = ({
     <audio
       ref={ref}
       src={url}
-      autoPlay={false}
+      autoPlay={playing ?? false}
       onTimeUpdate={onTimeUpdate}
       onProgress={onBuffer}
       onCanPlayThrough={onCanPlayThrough}

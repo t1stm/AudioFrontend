@@ -2,9 +2,10 @@ import { useAppSelector } from "../../state/hooks"
 import QueueEntry from "./QueueEntry"
 
 const Queue = () => {
-  const { queue } = useAppSelector(state => {
+  const { queue, currentIndex } = useAppSelector(state => {
     return {
-      queue: state.player.queue
+      queue: state.player.queue,
+      currentIndex: state.player.currentIndex
     }
   });
 
@@ -12,7 +13,7 @@ const Queue = () => {
     <div className="queue-entries">
       {
         queue.objects.map((entry, index) =>
-        (<QueueEntry key={index} queueObject={entry} index={index} />))
+        (<QueueEntry key={index} queueObject={entry} index={index} isCurrent={index === currentIndex} />))
       }
     </div>
   </div>;
