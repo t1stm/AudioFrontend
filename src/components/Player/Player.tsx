@@ -13,7 +13,7 @@ import {
 } from "../../state/player/playerSlice"
 import { PlayerProgressBar } from "./Progress Bar/PlayerProgressBar"
 import { Audio } from "./Audio"
-import { getTimeString } from "./playerUtils"
+import { getTimeString } from "./PlayerViewUtils"
 
 const Player = () => {
   const {

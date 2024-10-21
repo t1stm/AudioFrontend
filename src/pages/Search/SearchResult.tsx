@@ -5,7 +5,7 @@ import type { AppDispatch } from "../../state/store"
 import {
   convertTimeSpanStringToSeconds,
   getPlatformNameFromIdentifier
-} from "./searchUtils"
+} from "./SearchViewUtils"
 import { addToQueueAsync } from "../../state/player/playerSlice"
 import "./SearchResult.scss"
 

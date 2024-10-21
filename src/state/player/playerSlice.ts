@@ -3,10 +3,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import AudioManager from "./audioManager"
 import type { PlayerThunk } from "./playerThunk"
 import type { Queue, QueueObject } from "./queue"
+import { failsQueueChecks } from "./playerUtils"
 
 const audioManager = new AudioManager()
 
-interface PlayerState {
+export interface PlayerState {
   queue: Queue
   current: QueueObject
   currentIndex: number | null
@@ -108,29 +109,21 @@ const playerSlice = createSlice({
         state.current = firstElement
       })
       .addCase(previousTrackAsync.fulfilled, (state, action) => {
-        if (action.payload.isWebSocket) return
-        if (state.queue.objects.length < 1) return
+        if (failsQueueChecks(action.payload, state)) return
         state.playing = null;
 
-        if (state.currentIndex == null) {
-          state.current = state.queue.objects[0]
-          state.currentIndex = 0
-          return
-        }
-
-        if (state.currentIndex - 1 < 0) {
+        if (state.currentIndex! - 1 < 0) {
           state.seekToSeconds = 0
           return
         }
 
         state.playing = true;
-        state.current = state.queue.objects[--state.currentIndex]
+        state.current = state.queue.objects[--state.currentIndex!]
         state.currentSeconds = 0
         state.bufferedSeconds = 0
       })
       .addCase(nextTrackAsync.fulfilled, (state, action) => {
-        if (action.payload.isWebSocket) return
-        if (state.queue.objects.length < 1) return
+        if (failsQueueChecks(action.payload, state)) return
         state.playing = null;
 
         if (state.currentIndex == null) {
@@ -147,6 +140,7 @@ const playerSlice = createSlice({
         state.playing = true
         state.current = state.queue.objects[++state.currentIndex]
         state.seekToSeconds = 0
+        state.bufferedSeconds = 0
       })
       .addCase(playPauseAsync.fulfilled, (state, action) => {
         if (action.payload.isWebSocket) return
@@ -170,8 +164,7 @@ const playerSlice = createSlice({
       .addCase(
         endedAsync.fulfilled,
         (state, action) => {
-          if (action.payload.isWebSocket) return
-          if (state.currentIndex == null) return
+          if (action.payload.isWebSocket || state.currentIndex == null) return
           state.playing = null
 
           if (state.currentIndex + 1 >= state.queue.objects.length) {
@@ -180,6 +173,7 @@ const playerSlice = createSlice({
 
           state.current = state.queue.objects[++state.currentIndex]
           state.seekToSeconds = 0
+          state.bufferedSeconds = 0
           state.playing = true
         }
       )
