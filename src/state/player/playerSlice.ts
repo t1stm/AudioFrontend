@@ -126,19 +126,13 @@ const playerSlice = createSlice({
         if (failsGenericPlayerChecks(action.payload, state)) return
         state.playing = null;
 
-        if (state.currentIndex == null) {
-          state.current = state.queue.objects[0]
-          state.currentIndex = 0
-          return
-        }
-
-        if (state.currentIndex + 1 >= state.queue.objects.length) {
+        if (state.currentIndex! + 1 >= state.queue.objects.length) {
           state.seekToSeconds = state.current.totalSeconds
           return
         }
 
         state.playing = true
-        state.current = state.queue.objects[++state.currentIndex]
+        state.current = state.queue.objects[++state.currentIndex!]
         state.seekToSeconds = 0
         state.bufferedSeconds = 0
       })
