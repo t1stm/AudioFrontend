@@ -53,6 +53,9 @@ const playerSlice = createSlice({
       if (action.payload.buffer > state.bufferedSeconds)
         state.bufferedSeconds = action.payload.buffer
     },
+    updateVolume: (state, action: PayloadAction<{ volume: number }>) => {
+      state.volume = action.payload.volume
+    },
   },
   extraReducers: builder => {
     builder
@@ -284,5 +287,5 @@ export const endedAsync = createAsyncThunk(
   }
 )
 
-export const { updateTime, updateBuffer } = playerSlice.actions
+export const { updateTime, updateBuffer, updateVolume } = playerSlice.actions
 export default playerSlice.reducer
