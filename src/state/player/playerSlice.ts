@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import AudioManager from "./audioManager"
 import type { PlayerThunk } from "./playerThunk"
 import type { Queue, QueueObject } from "./queue"
-import { failsQueueChecks } from "./playerUtils"
+import { failsGenericPlayerChecks } from "./playerUtils"
 
 const audioManager = new AudioManager()
 
@@ -109,7 +109,7 @@ const playerSlice = createSlice({
         state.current = firstElement
       })
       .addCase(previousTrackAsync.fulfilled, (state, action) => {
-        if (failsQueueChecks(action.payload, state)) return
+        if (failsGenericPlayerChecks(action.payload, state)) return
         state.playing = null;
 
         if (state.currentIndex! - 1 < 0) {
@@ -123,7 +123,7 @@ const playerSlice = createSlice({
         state.bufferedSeconds = 0
       })
       .addCase(nextTrackAsync.fulfilled, (state, action) => {
-        if (failsQueueChecks(action.payload, state)) return
+        if (failsGenericPlayerChecks(action.payload, state)) return
         state.playing = null;
 
         if (state.currentIndex == null) {

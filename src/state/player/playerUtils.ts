@@ -2,7 +2,7 @@ import type { PlayerState } from "./playerSlice"
 import type { Draft } from "@reduxjs/toolkit"
 import type { PlayerThunk } from "./playerThunk"
 
-export function failsQueueChecks(payload: PlayerThunk, state: Draft<PlayerState>): boolean {
+export function failsGenericPlayerChecks(payload: PlayerThunk, state: Draft<PlayerState>): boolean {
   if (payload.isWebSocket || state.queue.objects.length < 1) return true
 
   if (state.currentIndex == null) {
