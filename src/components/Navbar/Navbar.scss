@@ -10,11 +10,21 @@ header {
   border-radius: 5px;
   gap: 10px;
   align-items: center;
+
+  @include small {
+    flex-wrap: wrap;
+    height: fit-content;
+    justify-content: center;
+  }
 }
 
 header > span {
   margin-right: 2em;
   font-weight: bold;
+
+  @include small {
+    display: none;
+  }
 }
 
 .link {
@@ -44,4 +54,7 @@ header > span {
 
 .login-link {
   margin-left: auto;
+  @include small {
+    margin-left: unset;
+  }
 }

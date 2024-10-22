@@ -11,6 +11,10 @@
   align-items: center;
   gap: 20px;
   padding: 20px 20px;
+
+  @include medium {
+    width: 100%;
+  }
 }
 
 .player-image-box {

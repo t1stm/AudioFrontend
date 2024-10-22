@@ -37,6 +37,10 @@ body {
   gap: 10px;
 
   height: 100%;
+
+  @include medium {
+    flex-direction: column;
+  }
 }
 
 #app-page {
@@ -46,6 +50,12 @@ body {
   width: 100%;
   gap: 20px;
   align-items: center;
+}
+
+.sidebar {
+  @include medium {
+    margin-top: auto;
+  }
 }
 
 .pages {
