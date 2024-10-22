@@ -26,11 +26,11 @@ const MediaSession: React.FC<InfoUpdaterProps> = ({title, artist, currentSeconds
   }, [title, artist, thumbnail])
 
   useEffect(() => {
-    if (!('mediaSession' in navigator)) return;
+    if (!('mediaSession' in navigator) || currentSeconds >= totalSeconds) return;
     navigator.mediaSession.setPositionState({
-      duration: totalSeconds,
+      duration: totalSeconds + 1,
       playbackRate: 1,
-      position: currentSeconds
+      position: currentSeconds - currentSeconds % 1
     })
   }, [currentSeconds, totalSeconds])
 

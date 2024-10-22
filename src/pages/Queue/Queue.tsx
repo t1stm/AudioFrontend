@@ -1,5 +1,6 @@
 import { useAppSelector } from "../../state/hooks"
 import QueueEntry from "./QueueEntry"
+import "./Queue.scss"
 
 const Queue = () => {
   const { queue, currentIndex } = useAppSelector(state => {

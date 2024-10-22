@@ -8,6 +8,7 @@ import {
 } from "./SearchViewUtils"
 import { addToQueueAsync } from "../../state/player/playerSlice"
 import "./SearchResult.scss"
+import PlatformBlip from "../../components/Platform Blip/PlatformBlip"
 
 const downloadEndpoint = "http://localhost:5226/Audio/Download"
 let codec = "Opus"
@@ -34,14 +35,7 @@ export const SearchResult:
         <span className="result-artist">{Artist}</span>
       </div>
       <div className="result-info">
-        <div
-          className="platform-blip"
-          style={{
-            background: info.color ?? "",
-          }}
-        >
-          {info.prettyName}
-        </div>
+        <PlatformBlip color={info.color} prettyName={info.prettyName} />
         <span className="result-duration">{Duration}</span>
       </div>
       <button
@@ -53,6 +47,7 @@ export const SearchResult:
               totalSeconds: convertTimeSpanStringToSeconds(Duration),
               image: thumbnail,
               url: `${downloadEndpoint}/${codec}/${bitrate}?id=${encodeURI(ID)}`,
+              platform: info
             }),
           )
         }

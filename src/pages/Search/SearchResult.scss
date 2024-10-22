@@ -42,18 +42,13 @@
   color: $color-surface-mixed-a50;
 }
 
-.platform-blip {
-  font-size: 9px;
-  font-weight: bold;
-  border-radius: 5px;
-  background-color: $color-surface-mixed-a30;
-  padding: 2px;
-  text-align: center;
-}
-
 .search-result > img {
   height: 100%;
   border-radius: 5px;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background-color: $color-surface-mixed-a0;
+  box-shadow: $box-shadow-generic;
 }
 
 .search-result > button {
