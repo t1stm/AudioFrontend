@@ -14,6 +14,7 @@ import {
 import { PlayerProgressBar } from "./Progress Bar/PlayerProgressBar"
 import { Audio } from "./Audio"
 import { getTimeString } from "./PlayerViewUtils"
+import MediaSession from "./Information/MediaSession"
 
 const Player = () => {
   const {
@@ -49,8 +50,8 @@ const Player = () => {
   })
   const dispatch = useAppDispatch<AppDispatch>()
 
-  const currentTime = getTimeString(currentSeconds)
-  const totalTime = getTimeString(totalSeconds)
+  const currentTime = getTimeString(currentSeconds ?? 0)
+  const totalTime = getTimeString(totalSeconds ?? 0)
   const buttons = [
     {
       name: "stop",
@@ -109,6 +110,16 @@ const Player = () => {
           )
         })}
       </div>
+
+      <MediaSession title={title}
+                    artist={artist}
+                    currentSeconds={currentSeconds}
+                    totalSeconds={totalSeconds}
+                    playing={playing}
+                    thumbnail={image}
+                    currentFormatted={currentTime}
+                    totalFormatted={totalTime}
+      />
 
       <Audio
         playing={playing}
