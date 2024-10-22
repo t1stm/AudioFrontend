@@ -12,7 +12,7 @@ interface InfoUpdaterProps {
   totalFormatted: string,
 }
 
-const MediaSession: React.FC<InfoUpdaterProps> = ({title, artist, currentSeconds, totalSeconds, playing, thumbnail, currentFormatted, totalFormatted}) => {
+const MediaSession: React.FC<InfoUpdaterProps> = ({title, artist, currentSeconds, totalSeconds, playing, thumbnail, currentFormatted}) => {
   useEffect(() => {
     if (!('mediaSession' in navigator)) return;
     navigator.mediaSession.metadata = new MediaMetadata({
@@ -35,11 +35,12 @@ const MediaSession: React.FC<InfoUpdaterProps> = ({title, artist, currentSeconds
   }, [currentSeconds, totalSeconds])
 
   useEffect(() => {
-    if (playing == null) return
+    if (playing == null || !('mediaSession' in navigator)) return
     navigator.mediaSession.playbackState = playing ? "playing" : "paused";
   }, [playing])
 
   useEffect(() => {
+    if (!('title' in document)) return
     document.title = `[Audio Player]: (${currentFormatted}) ${title} - ${artist}`;
   }, [title, artist, currentFormatted])
 
