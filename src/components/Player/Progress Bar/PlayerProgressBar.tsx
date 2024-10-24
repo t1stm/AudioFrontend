@@ -37,7 +37,9 @@ export const PlayerProgressBar: React.FC<PlayerProgress> = ({
     const rect = divElement.getBoundingClientRect()
     const currentX = e.clientX - rect.left
     const divWidth = rect.width
-    setBlipLeft(currentX / divWidth)
+    const percentage = currentX / divWidth;
+    const clamped = Math.max(Math.min(percentage, 1), 0)
+    setBlipLeft(clamped)
   }, [])
 
   return (
