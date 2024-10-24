@@ -54,9 +54,13 @@ const playerSlice = createSlice({
       state.current = action.payload
       state.currentSeconds = 0
       state.bufferedSeconds = 0
+      state.seekToSeconds = null
     },
     setPlaying: (state, action: PayloadAction<boolean>) => {
       state.playing = action.payload
+    },
+    seekTo: (state, action: PayloadAction<number>) => {
+      state.seekToSeconds = action.payload
     },
     stop: state => {
       state.playing = false
@@ -72,5 +76,6 @@ export const {
   setPlaying,
   setCurrent,
   stop,
+  seekTo
 } = playerSlice.actions
 export default playerSlice.reducer

@@ -6,7 +6,7 @@ import {
   updateTime,
   setCurrent,
   setPlaying,
-  stop,
+  stop, seekTo
 } from "../../state/player/playerSlice"
 
 import { previousTrack, nextTrack, shuffle } from "../../state/queue/queueSlice"
@@ -112,6 +112,9 @@ const Player = () => {
           currentSeconds={player.currentSeconds}
           bufferedSeconds={player.bufferedSeconds}
           totalSeconds={player.totalSeconds}
+          onClick={(percentage) => {
+            dispatch(seekTo(percentage * player.totalSeconds))
+          }}
         ></PlayerProgressBar>
         <span className="time total-time">{totalTime}</span>
       </span>
