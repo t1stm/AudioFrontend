@@ -5,6 +5,7 @@ import type { QueueObject } from "./queue"
 export interface PlayerState {
   current: QueueObject
 
+  currentIndex: number
   playing: boolean | null
   currentSeconds: number
   bufferedSeconds: number
@@ -29,6 +30,7 @@ const initialState: PlayerState = {
   current: {
     ...defaultCurrent,
   },
+  currentIndex: -1,
   playing: true,
   currentSeconds: 0,
   bufferedSeconds: 0,
@@ -50,8 +52,9 @@ const playerSlice = createSlice({
     updateVolume: (state, action: PayloadAction<{ volume: number }>) => {
       state.volume = action.payload.volume
     },
-    setCurrent: (state, action: PayloadAction<QueueObject>) => {
-      state.current = action.payload
+    setCurrent: (state, action: PayloadAction<{object: QueueObject, index: number}>) => {
+      state.current = action.payload.object
+      state.currentIndex = action.payload.index
       state.currentSeconds = 0
       state.bufferedSeconds = 0
       state.seekToSeconds = null

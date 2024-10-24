@@ -49,7 +49,7 @@ const Player = () => {
         playing: state.player.playing,
         seekToSeconds: state.player.seekToSeconds,
         volume: state.player.volume,
-        currentIndex: state.queue.currentIndex,
+        currentIndex: state.player.currentIndex,
       },
     }
   })
@@ -61,10 +61,15 @@ const Player = () => {
   useEffect(() => {
     if (queue.currentIndex < 0 || queue.currentIndex >= queue.objects.length)
       return
+    if (queue.currentIndex === player.currentIndex)
+      return
 
     const current = queue.objects[queue.currentIndex]
-    dispatch(setCurrent(current))
-  }, [queue.objects, queue.currentIndex, dispatch])
+    dispatch(setCurrent({
+      object: current,
+      index: queue.currentIndex
+    }))
+  }, [dispatch, queue.objects, queue.currentIndex, player.currentIndex])
 
   const buttons = [
     {
