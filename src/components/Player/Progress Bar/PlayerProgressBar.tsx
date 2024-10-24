@@ -30,12 +30,12 @@ export const PlayerProgressBar: React.FC<PlayerProgress> = ({
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const divElement = divRef.current
-    if (divElement) {
-      const rect = divElement.getBoundingClientRect()
-      const currentX = e.clientX - rect.left
-      const divWidth = rect.width
-      setBlipLeft((100 * currentX) / divWidth)
-    }
+    if (!divElement) return
+
+    const rect = divElement.getBoundingClientRect()
+    const currentX = e.clientX - rect.left
+    const divWidth = rect.width
+    setBlipLeft((100 * currentX) / divWidth)
   }, [])
 
   return (
