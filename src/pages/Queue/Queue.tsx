@@ -3,17 +3,17 @@ import QueueEntry from "./QueueEntry"
 import "./Queue.scss"
 
 const Queue = () => {
-  const { queue, currentIndex } = useAppSelector(state => {
+  const { objects, currentIndex } = useAppSelector(state => {
     return {
-      queue: state.player.queue,
-      currentIndex: state.player.currentIndex
+      objects: state.queue.objects,
+      currentIndex: state.queue.currentIndex
     }
   });
 
   return <div className="queue">
     <div className="queue-entries">
       {
-        queue.objects.map((entry, index) =>
+        objects.map((entry, index) =>
         (<QueueEntry key={index} queueObject={entry} index={index} isCurrent={index === currentIndex} />))
       }
     </div>

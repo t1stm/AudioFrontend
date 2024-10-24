@@ -6,11 +6,12 @@ import {
   convertTimeSpanStringToSeconds,
   getPlatformNameFromIdentifier
 } from "./SearchViewUtils"
-import { addToQueueAsync } from "../../state/player/playerSlice"
 import "./SearchResult.scss"
 import PlatformBlip from "../../components/Platform Blip/PlatformBlip"
+import emptyImage from "/static/images/empty.png"
+import { BACKEND_DOWNLOAD_ENDPOINT } from "../../config";
+import { addToQueue } from "../../state/queue/queueSlice"
 
-const downloadEndpoint = "http://localhost:5226/Audio/Download"
 let codec = "Opus"
 let bitrate = "192"
 
@@ -25,7 +26,7 @@ export const SearchResult:
   const dispatch = useAppDispatch<AppDispatch>()
   const info = getPlatformNameFromIdentifier(ID)
 
-  const thumbnail = ThumbnailUrl !== null && ThumbnailUrl.length !== 0 ? ThumbnailUrl : "/static/images/empty.png"
+  const thumbnail = ThumbnailUrl !== null && ThumbnailUrl.length !== 0 ? ThumbnailUrl : emptyImage
 
   return (
     <div key={ID} className="search-result">
@@ -39,18 +40,23 @@ export const SearchResult:
         <span className="result-duration">{Duration}</span>
       </div>
       <button
-        onClick={() =>
+        onClick={() => {
+          // when skipping between to identical entries in the queue,
+          // the src isn't changed so the player doesn't reset the playback.
+
+          // this fixes that without making new requests if caching is enabled
+          const random_hash = crypto.randomUUID();
           dispatch(
-            addToQueueAsync({
+            addToQueue({
               title: Name ?? "",
               artist: Artist ?? "",
               totalSeconds: convertTimeSpanStringToSeconds(Duration),
               image: thumbnail,
-              url: `${downloadEndpoint}/${codec}/${bitrate}?id=${encodeURI(ID)}`,
+              url: `${BACKEND_DOWNLOAD_ENDPOINT}/${codec}/${bitrate}?id=${encodeURI(ID)}#random_hash=${random_hash}`,
               platform: info
             }),
           )
-        }
+        }}
       >
         Add to Queue
       </button>

@@ -2,76 +2,101 @@ import type { AppDispatch, RootState } from "../../state/store"
 import "./Player.scss"
 import { useAppDispatch, useAppSelector } from "../../state/hooks"
 import {
-  endedAsync,
-  nextTrackAsync,
-  playPauseAsync,
-  previousTrackAsync,
-  shuffleAsync,
-  stopAsync,
   updateBuffer,
-  updateTime
+  updateTime,
+  setCurrent,
+  setPlaying,
+  stop
 } from "../../state/player/playerSlice"
+
+import {
+  previousTrack,
+  nextTrack,
+  shuffle,
+} from "../../state/queue/queueSlice"
+
 import { PlayerProgressBar } from "./Progress Bar/PlayerProgressBar"
 import { Audio } from "./Audio"
 import { getTimeString } from "./PlayerViewUtils"
 import MediaSession from "./Information/MediaSession"
 
+import stopImage from "/static/icons/stop.png";
+import backImage from "/static/icons/back.png";
+import playImage from "/static/icons/play.png";
+import pauseImage from "/static/icons/pause.png";
+import nextImage from "/static/icons/next.png";
+import shuffleImage from "/static/icons/shuffle.png";
+import emptyImage from "/static/images/empty.png";
+import { useEffect } from "react"
+
 const Player = () => {
   const {
-    title,
-    artist,
-    currentSeconds,
-    bufferedSeconds,
-    totalSeconds,
-    image,
-    playing,
-    url,
-    seekToSeconds,
-    volume
+    queue,
+    player
   } = useAppSelector((state: RootState) => {
     let image = state.player.current.image
     if (image.length === 0) {
-      image = "/static/images/empty.png"
+      image = emptyImage
     }
 
     return {
-      title: state.player.current.title,
-      artist: state.player.current.artist,
-      totalSeconds: state.player.current.totalSeconds,
-      image: image,
-      url: state.player.current.url,
+      queue: {
+        currentIndex: state.queue.currentIndex,
+        objects: state.queue.objects
+      },
+      player: {
+        title: state.player.current.title,
+        artist: state.player.current.artist,
+        totalSeconds: state.player.current.totalSeconds,
+        image: image,
+        url: state.player.current.url,
 
-      currentSeconds: state.player.currentSeconds,
-      bufferedSeconds: state.player.bufferedSeconds,
-      playing: state.player.playing,
-      seekToSeconds: state.player.seekToSeconds,
-      volume: state.player.volume
+        currentSeconds: state.player.currentSeconds,
+        bufferedSeconds: state.player.bufferedSeconds,
+        playing: state.player.playing,
+        seekToSeconds: state.player.seekToSeconds,
+        volume: state.player.volume,
+        currentIndex: state.queue.currentIndex
+      }
     }
   })
   const dispatch = useAppDispatch<AppDispatch>()
 
-  const currentTime = getTimeString(currentSeconds ?? 0)
-  const totalTime = getTimeString(totalSeconds ?? 0)
+  const currentTime = getTimeString(player.currentSeconds ?? 0)
+  const totalTime = getTimeString(player.totalSeconds ?? 0)
+
+  useEffect(() => {
+    if (queue.currentIndex < 0 || queue.currentIndex >= queue.objects.length) return
+
+    const current = queue.objects[queue.currentIndex]
+    dispatch(setCurrent(current))
+  }, [queue.objects, queue.currentIndex, dispatch])
+
   const buttons = [
     {
       name: "stop",
-      clickAction: () => dispatch(stopAsync())
+      imageUrl: stopImage,
+      clickAction: () => dispatch(stop())
     },
     {
       name: "back",
-      clickAction: () => dispatch(previousTrackAsync()),
+      imageUrl: backImage,
+      clickAction: () => dispatch(previousTrack()),
     },
     {
-      name: playing ? "play" : "pause",
-      clickAction: () => dispatch(playPauseAsync(null)),
+      name: player.playing ? "play" : "pause",
+      imageUrl: player.playing ? playImage : pauseImage,
+      clickAction: () => dispatch(setPlaying(!player.playing)),
     },
     {
       name: "next",
-      clickAction: () => dispatch(nextTrackAsync()),
+      imageUrl: nextImage,
+      clickAction: () => dispatch(nextTrack()),
     },
     {
       name: "shuffle",
-      clickAction: () => dispatch(shuffleAsync())
+      imageUrl: shuffleImage,
+      clickAction: () => dispatch(shuffle())
     },
   ];
 
@@ -79,30 +104,30 @@ const Player = () => {
     <div id="player">
       <div className="player-song-info">
         <div className="player-image-box">
-          <img className="player-image" src={image} alt=""></img>
+          <img className="player-image" src={player.image} alt=""></img>
         </div>
         <div className="player-info">
-          <span className="title">{title}</span>
-          <span className="artist">{artist}</span>
+          <span className="title">{player.title}</span>
+          <span className="artist">{player.artist}</span>
         </div>
       </div>
 
       <span className="player-progress">
         <span className="time current-time">{currentTime}</span>
         <PlayerProgressBar
-          currentSeconds={currentSeconds}
-          bufferedSeconds={bufferedSeconds}
-          totalSeconds={totalSeconds}
+          currentSeconds={player.currentSeconds}
+          bufferedSeconds={player.bufferedSeconds}
+          totalSeconds={player.totalSeconds}
         ></PlayerProgressBar>
         <span className="time total-time">{totalTime}</span>
       </span>
 
       <div className="player-buttons">
-        {buttons.map(({ name, clickAction }) => {
+        {buttons.map(({ name, clickAction, imageUrl }) => {
           return (
             <img
               key={name}
-              src={`/static/icons/${name}.png`}
+              src={imageUrl}
               className={`${name}-button`}
               alt={`${name} button`}
               onClick={clickAction}
@@ -111,21 +136,21 @@ const Player = () => {
         })}
       </div>
 
-      <MediaSession title={title}
-                    artist={artist}
-                    currentSeconds={currentSeconds}
-                    totalSeconds={totalSeconds}
-                    playing={playing}
-                    thumbnail={image}
+      <MediaSession title={player.title}
+                    artist={player.artist}
+                    currentSeconds={player.currentSeconds}
+                    totalSeconds={player.totalSeconds}
+                    playing={player.playing}
+                    thumbnail={player.image}
                     currentFormatted={currentTime}
                     totalFormatted={totalTime}
       />
 
       <Audio
-        playing={playing}
-        seekTime={seekToSeconds}
-        url={url}
-        volume={volume}
+        playing={player.playing}
+        seekTime={player.seekToSeconds}
+        url={player.url}
+        volume={player.volume}
         onTimeUpdate={event => {
           const player = event.currentTarget
           const time = player.currentTime
@@ -140,11 +165,11 @@ const Player = () => {
           dispatch(updateBuffer({ buffer: end }))
         }}
         onCanPlayThrough={() => {
-          dispatch(updateBuffer({ buffer: totalSeconds }))
+          dispatch(updateBuffer({ buffer: player.totalSeconds }))
         }}
         onEnded={() => {
           console.log("Ended current audio.")
-          dispatch(endedAsync())
+          dispatch(nextTrack())
         }}
       />
     </div>
