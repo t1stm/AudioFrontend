@@ -5,8 +5,8 @@ import { getTimeString } from "../../components/Player/PlayerViewUtils"
 import PlatformBlip from "../../components/Platform Blip/PlatformBlip"
 
 interface QueueEntryProps {
-  queueObject: QueueObject,
-  index: number,
+  queueObject: QueueObject
+  index: number
   isCurrent: boolean
 }
 

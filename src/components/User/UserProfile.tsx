@@ -1,11 +1,7 @@
 import "./UserProfile.scss"
 
 const UserProfile = () => {
-  return (
-    <div>
-
-    </div>
-  );
+  return <div></div>
 }
 
-export default UserProfile;
+export default UserProfile

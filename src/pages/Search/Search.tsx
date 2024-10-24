@@ -8,9 +8,9 @@ import { SearchResult } from "./SearchResult"
 const Search = () => {
   const { search } = useAppSelector((state: RootState) => {
     return {
-      search: state.search.objects ?? []
+      search: state.search.objects ?? [],
     }
-  });
+  })
   const dispatch = useAppDispatch<AppDispatch>()
 
   const [keywords, setKeywords] = useState("")

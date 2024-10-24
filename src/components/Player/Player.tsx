@@ -6,34 +6,27 @@ import {
   updateTime,
   setCurrent,
   setPlaying,
-  stop
+  stop,
 } from "../../state/player/playerSlice"
 
-import {
-  previousTrack,
-  nextTrack,
-  shuffle,
-} from "../../state/queue/queueSlice"
+import { previousTrack, nextTrack, shuffle } from "../../state/queue/queueSlice"
 
 import { PlayerProgressBar } from "./Progress Bar/PlayerProgressBar"
 import { Audio } from "./Audio"
 import { getTimeString } from "./PlayerViewUtils"
 import MediaSession from "./Information/MediaSession"
 
-import stopImage from "/static/icons/stop.png";
-import backImage from "/static/icons/back.png";
-import playImage from "/static/icons/play.png";
-import pauseImage from "/static/icons/pause.png";
-import nextImage from "/static/icons/next.png";
-import shuffleImage from "/static/icons/shuffle.png";
-import emptyImage from "/static/images/empty.png";
+import stopImage from "/static/icons/stop.png"
+import backImage from "/static/icons/back.png"
+import playImage from "/static/icons/play.png"
+import pauseImage from "/static/icons/pause.png"
+import nextImage from "/static/icons/next.png"
+import shuffleImage from "/static/icons/shuffle.png"
+import emptyImage from "/static/images/empty.png"
 import { useEffect } from "react"
 
 const Player = () => {
-  const {
-    queue,
-    player
-  } = useAppSelector((state: RootState) => {
+  const { queue, player } = useAppSelector((state: RootState) => {
     let image = state.player.current.image
     if (image.length === 0) {
       image = emptyImage
@@ -42,7 +35,7 @@ const Player = () => {
     return {
       queue: {
         currentIndex: state.queue.currentIndex,
-        objects: state.queue.objects
+        objects: state.queue.objects,
       },
       player: {
         title: state.player.current.title,
@@ -56,8 +49,8 @@ const Player = () => {
         playing: state.player.playing,
         seekToSeconds: state.player.seekToSeconds,
         volume: state.player.volume,
-        currentIndex: state.queue.currentIndex
-      }
+        currentIndex: state.queue.currentIndex,
+      },
     }
   })
   const dispatch = useAppDispatch<AppDispatch>()
@@ -66,7 +59,8 @@ const Player = () => {
   const totalTime = getTimeString(player.totalSeconds ?? 0)
 
   useEffect(() => {
-    if (queue.currentIndex < 0 || queue.currentIndex >= queue.objects.length) return
+    if (queue.currentIndex < 0 || queue.currentIndex >= queue.objects.length)
+      return
 
     const current = queue.objects[queue.currentIndex]
     dispatch(setCurrent(current))
@@ -76,7 +70,7 @@ const Player = () => {
     {
       name: "stop",
       imageUrl: stopImage,
-      clickAction: () => dispatch(stop())
+      clickAction: () => dispatch(stop()),
     },
     {
       name: "back",
@@ -96,9 +90,9 @@ const Player = () => {
     {
       name: "shuffle",
       imageUrl: shuffleImage,
-      clickAction: () => dispatch(shuffle())
+      clickAction: () => dispatch(shuffle()),
     },
-  ];
+  ]
 
   return (
     <div id="player">
@@ -136,14 +130,15 @@ const Player = () => {
         })}
       </div>
 
-      <MediaSession title={player.title}
-                    artist={player.artist}
-                    currentSeconds={player.currentSeconds}
-                    totalSeconds={player.totalSeconds}
-                    playing={player.playing}
-                    thumbnail={player.image}
-                    currentFormatted={currentTime}
-                    totalFormatted={totalTime}
+      <MediaSession
+        title={player.title}
+        artist={player.artist}
+        currentSeconds={player.currentSeconds}
+        totalSeconds={player.totalSeconds}
+        playing={player.playing}
+        thumbnail={player.image}
+        currentFormatted={currentTime}
+        totalFormatted={totalTime}
       />
 
       <Audio

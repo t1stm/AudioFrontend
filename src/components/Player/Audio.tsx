@@ -1,4 +1,4 @@
-import type React from "react";
+import type React from "react"
 import type { SyntheticEvent } from "react"
 import { useRef } from "react"
 import { useEffect } from "react"
@@ -22,7 +22,7 @@ export const Audio: React.FC<AudioParams> = ({
   onTimeUpdate,
   onCanPlayThrough,
   onBuffer,
-  onEnded
+  onEnded,
 }) => {
   const ref = useRef<HTMLAudioElement | null>(null)
 

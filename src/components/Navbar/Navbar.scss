@@ -36,7 +36,9 @@ header > span {
   min-width: 100px;
   text-align: center;
   box-shadow: $box-shadow-generic;
-  transition: background 133ms, outline 133ms;
+  transition:
+    background 133ms,
+    outline 133ms;
   font-weight: bold;
 }
 

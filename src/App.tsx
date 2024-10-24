@@ -3,12 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import "./App.scss"
 import Navbar from "./components/Navbar/Navbar"
 import Player from "./components/Player/Player"
-import Search from "./pages/Search/Search";
+import Search from "./pages/Search/Search"
 import Login from "./pages/Login/Login"
 import Queue from "./pages/Queue/Queue"
 
 const App = () => {
-  return (<BrowserRouter>
+  return (
+    <BrowserRouter>
       <div id="app">
         <div id="app-page">
           <Navbar />

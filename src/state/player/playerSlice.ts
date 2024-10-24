@@ -58,13 +58,19 @@ const playerSlice = createSlice({
     setPlaying: (state, action: PayloadAction<boolean>) => {
       state.playing = action.payload
     },
-    stop: (state) => {
+    stop: state => {
       state.playing = false
       state.currentSeconds = 0
-    }
-  }
+    },
+  },
 })
 
-
-export const { updateTime, updateBuffer, updateVolume, setPlaying, setCurrent, stop } = playerSlice.actions
+export const {
+  updateTime,
+  updateBuffer,
+  updateVolume,
+  setPlaying,
+  setCurrent,
+  stop,
+} = playerSlice.actions
 export default playerSlice.reducer

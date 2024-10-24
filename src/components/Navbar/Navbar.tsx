@@ -3,7 +3,7 @@ import CustomNavLink from "./CustomNavLink"
 import UserProfile from "../User/UserProfile"
 
 const Navbar = () => {
-  const loggedIn = false;
+  const loggedIn = false
 
   return (
     <header>
@@ -11,12 +11,13 @@ const Navbar = () => {
       <CustomNavLink to="" linkText="Search" />
       <CustomNavLink to="/queue" linkText="Queue" />
       <CustomNavLink to="/settings" linkText="Settings" />
-      {loggedIn ?
-        <UserProfile /> :
+      {loggedIn ? (
+        <UserProfile />
+      ) : (
         <CustomNavLink to="/login" linkText="Login" className="login-link" />
-      }
+      )}
     </header>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar

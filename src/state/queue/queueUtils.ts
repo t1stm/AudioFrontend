@@ -1,4 +1,7 @@
-export function shuffleArray(objects: Array<any>, currentIndex: number): Array<any> {
+export function shuffleArray(
+  objects: Array<any>,
+  currentIndex: number,
+): Array<any> {
   // do nothing if there are no objects in the queue
   if (objects.length < 1) return objects
 
@@ -8,8 +11,8 @@ export function shuffleArray(objects: Array<any>, currentIndex: number): Array<a
 
   // shuffle algorithm using Math.random
   for (let i = objects.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [objects[i], objects[j]] = [objects[j], objects[i]]
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[objects[i], objects[j]] = [objects[j], objects[i]]
   }
 
   // gets the first object that is confirmed to exist due to a check above

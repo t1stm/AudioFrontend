@@ -4,29 +4,31 @@ import { useAppDispatch } from "../../state/hooks"
 import type { AppDispatch } from "../../state/store"
 import {
   convertTimeSpanStringToSeconds,
-  getPlatformNameFromIdentifier
+  getPlatformNameFromIdentifier,
 } from "./SearchViewUtils"
 import "./SearchResult.scss"
 import PlatformBlip from "../../components/Platform Blip/PlatformBlip"
 import emptyImage from "/static/images/empty.png"
-import { BACKEND_DOWNLOAD_ENDPOINT } from "../../config";
+import { BACKEND_DOWNLOAD_ENDPOINT } from "../../config"
 import { addToQueue } from "../../state/queue/queueSlice"
 
 let codec = "Opus"
 let bitrate = "192"
 
-export const SearchResult: 
-  React.FC<SearchObject> = ({
-    ID,
-    Name,
-    Artist,
-    Duration,
-    ThumbnailUrl
-  }) => {
+export const SearchResult: React.FC<SearchObject> = ({
+  ID,
+  Name,
+  Artist,
+  Duration,
+  ThumbnailUrl,
+}) => {
   const dispatch = useAppDispatch<AppDispatch>()
   const info = getPlatformNameFromIdentifier(ID)
 
-  const thumbnail = ThumbnailUrl !== null && ThumbnailUrl.length !== 0 ? ThumbnailUrl : emptyImage
+  const thumbnail =
+    ThumbnailUrl !== null && ThumbnailUrl.length !== 0
+      ? ThumbnailUrl
+      : emptyImage
 
   return (
     <div key={ID} className="search-result">
@@ -45,7 +47,7 @@ export const SearchResult:
           // the src isn't changed so the player doesn't reset the playback.
 
           // this fixes that without making new requests if caching is enabled
-          const random_hash = crypto.randomUUID();
+          const random_hash = crypto.randomUUID()
           dispatch(
             addToQueue({
               title: Name ?? "",
@@ -53,7 +55,7 @@ export const SearchResult:
               totalSeconds: convertTimeSpanStringToSeconds(Duration),
               image: thumbnail,
               url: `${BACKEND_DOWNLOAD_ENDPOINT}/${codec}/${bitrate}?id=${encodeURI(ID)}#random_hash=${random_hash}`,
-              platform: info
+              platform: info,
             }),
           )
         }}
