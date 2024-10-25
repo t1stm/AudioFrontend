@@ -85,8 +85,8 @@ const Player = () => {
       clickAction: () => dispatch(previousTrack()),
     },
     {
-      name: player.playing ? "play" : "pause",
-      imageUrl: player.playing ? playImage : pauseImage,
+      name: player.playing ? "pause" : "play",
+      imageUrl: player.playing ? pauseImage : playImage,
       clickAction: () => dispatch(setPlaying(!player.playing)),
     },
     {

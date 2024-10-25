@@ -1,5 +1,8 @@
-import type React from "react"
-import { useEffect } from "react"
+import type React from "react";
+import { useRef, useEffect } from "react"
+import { useAppDispatch } from "../../../state/hooks"
+import { seekOffset, seekTo, setPlaying, stop } from "../../../state/player/playerSlice"
+import { nextTrack, previousTrack } from "../../../state/queue/queueSlice"
 
 interface InfoUpdaterProps {
   title: string
@@ -21,6 +24,9 @@ const MediaSession: React.FC<InfoUpdaterProps> = ({
   thumbnail,
   currentFormatted,
 }) => {
+  const ref = useRef<number>(8)
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (!("mediaSession" in navigator)) return
     navigator.mediaSession.metadata = new MediaMetadata({
@@ -33,10 +39,13 @@ const MediaSession: React.FC<InfoUpdaterProps> = ({
 
   useEffect(() => {
     if (!("mediaSession" in navigator) || currentSeconds >= totalSeconds) return
+    if (ref.current === null || ++ref.current < 8) return
+    ref.current = 0
+
     navigator.mediaSession.setPositionState({
       duration: totalSeconds + 1,
       playbackRate: 1,
-      position: currentSeconds - (currentSeconds % 1),
+      position: currentSeconds,
     })
   }, [currentSeconds, totalSeconds])
 
@@ -49,6 +58,47 @@ const MediaSession: React.FC<InfoUpdaterProps> = ({
     if (!("title" in document)) return
     document.title = `[Audio Player]: (${currentFormatted}) ${title} - ${artist}`
   }, [title, artist, currentFormatted])
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator)) return
+    const actions = {
+      "play": () => {
+        dispatch(setPlaying(true))
+      },
+      "pause": () => {
+        dispatch(setPlaying(false))
+      },
+      "stop": () => {
+        dispatch(stop())
+      },
+      "nexttrack": () => {
+        dispatch(nextTrack())
+      },
+      "previoustrack": () => {
+        dispatch(previousTrack())
+      },
+      "seekto": (details: MediaSessionActionDetails) => {
+        if (!details.seekTime) return
+        dispatch(seekTo(details.seekTime))
+      },
+      "seekforward": (details: MediaSessionActionDetails) => {
+        dispatch(seekOffset(details.seekOffset || 5))
+      },
+      "seekbackward": (details: MediaSessionActionDetails) => {
+        dispatch(seekOffset(-(details.seekOffset || 5)))
+      },
+    }
+
+    for (const [action, handler] of Object.entries(actions)) {
+      navigator.mediaSession.setActionHandler(action as MediaSessionAction, handler)
+    }
+
+    return () => {
+      for (const action of Object.keys(actions)) {
+        navigator.mediaSession.setActionHandler(action as MediaSessionAction, null)
+      }
+    }
+  }, [dispatch])
 
   return <></>
 }
