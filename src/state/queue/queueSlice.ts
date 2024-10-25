@@ -42,18 +42,19 @@ const queueSlice = createSlice({
       const objects = state.objects
       const targetIndex = action.payload
 
-      if (targetIndex === state.currentIndex ||
+      if (
+        targetIndex === state.currentIndex ||
         targetIndex >= objects.length ||
-        targetIndex < 0)
+        targetIndex < 0
+      )
         return
 
-      if (state.currentIndex > targetIndex)
-        state.currentIndex--
+      if (state.currentIndex > targetIndex) state.currentIndex--
 
       const removed = objects.splice(targetIndex, 1)
       objects.splice(state.currentIndex + 1, 0, removed[0]) // [0] is asserted above by only getting one
       state.objects = objects
-    }
+    },
   },
 })
 

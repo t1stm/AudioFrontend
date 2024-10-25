@@ -52,7 +52,10 @@ const playerSlice = createSlice({
     updateVolume: (state, action: PayloadAction<{ volume: number }>) => {
       state.volume = action.payload.volume
     },
-    setCurrent: (state, action: PayloadAction<{object: QueueObject, index: number}>) => {
+    setCurrent: (
+      state,
+      action: PayloadAction<{ object: QueueObject; index: number }>,
+    ) => {
       state.current = action.payload.object
       state.currentIndex = action.payload.index
       state.currentSeconds = 0
@@ -79,6 +82,6 @@ export const {
   setPlaying,
   setCurrent,
   stop,
-  seekTo
+  seekTo,
 } = playerSlice.actions
 export default playerSlice.reducer

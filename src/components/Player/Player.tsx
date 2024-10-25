@@ -6,7 +6,8 @@ import {
   updateTime,
   setCurrent,
   setPlaying,
-  stop, seekTo
+  stop,
+  seekTo,
 } from "../../state/player/playerSlice"
 
 import { previousTrack, nextTrack, shuffle } from "../../state/queue/queueSlice"
@@ -61,14 +62,15 @@ const Player = () => {
   useEffect(() => {
     if (queue.currentIndex < 0 || queue.currentIndex >= queue.objects.length)
       return
-    if (queue.currentIndex === player.currentIndex)
-      return
+    if (queue.currentIndex === player.currentIndex) return
 
     const current = queue.objects[queue.currentIndex]
-    dispatch(setCurrent({
-      object: current,
-      index: queue.currentIndex
-    }))
+    dispatch(
+      setCurrent({
+        object: current,
+        index: queue.currentIndex,
+      }),
+    )
   }, [dispatch, queue.objects, queue.currentIndex, player.currentIndex])
 
   const buttons = [
@@ -117,7 +119,7 @@ const Player = () => {
           currentSeconds={player.currentSeconds}
           bufferedSeconds={player.bufferedSeconds}
           totalSeconds={player.totalSeconds}
-          onClick={(percentage) => {
+          onClick={percentage => {
             dispatch(seekTo(percentage * player.totalSeconds))
           }}
         ></PlayerProgressBar>

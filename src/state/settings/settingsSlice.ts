@@ -1,10 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
-interface SettingsState {
-}
+interface SettingsState {}
 
-const initialState: SettingsState = {
-}
+const initialState: SettingsState = {}
 
 const settingsSlice = createSlice({
   name: "search",

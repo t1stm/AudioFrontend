@@ -29,13 +29,21 @@ const QueueEntry: React.FC<QueueEntryProps> = (props: QueueEntryProps) => {
       <PlatformBlip color={platform.color} prettyName={platform.prettyName} />
       <span className="queue-total-length">{getTimeString(totalSeconds)}</span>
       <div className="queue-item-buttons">
-        <button onClick={() => {
-          setNext(index)
-        }}>Set Next</button>
+        <button
+          onClick={() => {
+            setNext(index)
+          }}
+        >
+          Set Next
+        </button>
 
-        <button onClick={() => {
-          skipTo(index)
-        }}>Skip To</button>
+        <button
+          onClick={() => {
+            skipTo(index)
+          }}
+        >
+          Skip To
+        </button>
       </div>
     </div>
   )

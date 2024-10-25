@@ -22,7 +22,7 @@ export const PlayerProgressBar: React.FC<PlayerProgress> = ({
   currentSeconds,
   bufferedSeconds,
   totalSeconds,
-  onClick
+  onClick,
 }) => {
   const buffered_style = getWidthFromParams(bufferedSeconds, totalSeconds)
   const current_style = getWidthFromParams(currentSeconds, totalSeconds)
@@ -37,13 +37,18 @@ export const PlayerProgressBar: React.FC<PlayerProgress> = ({
     const rect = divElement.getBoundingClientRect()
     const currentX = e.clientX - rect.left
     const divWidth = rect.width
-    const percentage = currentX / divWidth;
+    const percentage = currentX / divWidth
     const clamped = Math.max(Math.min(percentage, 1), 0)
     setBlipLeft(clamped)
   }, [])
 
   return (
-    <div ref={divRef} className="progress-bar" onMouseMove={handleMouseMove} onClick={() => onClick(blipLeft)}>
+    <div
+      ref={divRef}
+      className="progress-bar"
+      onMouseMove={handleMouseMove}
+      onClick={() => onClick(blipLeft)}
+    >
       <div className="progress-bar-buffered" style={buffered_style}></div>
       <div className="progress-bar-current" style={current_style}></div>
       <div

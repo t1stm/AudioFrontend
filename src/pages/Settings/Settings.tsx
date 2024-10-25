@@ -1,11 +1,7 @@
 import "./Settings.scss"
 
 const Settings = () => {
-  return (
-    <div>
-
-    </div>
-  )
+  return <div></div>
 }
 
 export default Settings

@@ -11,7 +11,7 @@ const Queue = () => {
     }
   })
 
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   return (
     <div className="queue">
       <div className="queue-entries">
@@ -21,10 +21,10 @@ const Queue = () => {
             queueObject={entry}
             index={index}
             isCurrent={index === currentIndex}
-            setNext={(index) => {
+            setNext={index => {
               dispatch(setNext(index))
             }}
-            skipTo={(index) => {
+            skipTo={index => {
               dispatch(setCurrentIndex(index))
             }}
           />
