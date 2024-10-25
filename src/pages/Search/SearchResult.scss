@@ -24,6 +24,9 @@
   font-weight: bold;
   font-size: 15px;
   text-overflow: ellipsis;
+  @include small {
+    font-size: 13px;
+  }
 }
 
 .result-artist {
@@ -49,6 +52,9 @@
   object-fit: contain;
   background-color: $color-surface-mixed-a0;
   box-shadow: $box-shadow-generic;
+  @include small {
+    aspect-ratio: 1;
+  }
 }
 
 .search-result > button {
