@@ -18,16 +18,20 @@ const QueueEntry: React.FC<QueueEntryProps> = (props: QueueEntryProps) => {
 
   return (
     <div className={`queue-entry ${isCurrent ? "queue-current" : ""}`}>
-      <div className="queue-index-image">
-        <span className="queue-index">#{index + 1}</span>
-        <img src={image} alt="Thumbnail"></img>
+      <div className="queue-non-buttons">
+        <div className="queue-index-image">
+          <span className="queue-index">#{index + 1}</span>
+          <img src={image} alt="Thumbnail"></img>
+        </div>
+        <div className="queue-info">
+          <span className="queue-title">{title}</span>
+          <span className="queue-artist">{artist}</span>
+        </div>
+        <div className="queue-platform-length">
+          <PlatformBlip color={platform.color} prettyName={platform.prettyName} />
+          <span className="queue-total-length">{getTimeString(totalSeconds)}</span>
+        </div>
       </div>
-      <div className="queue-info">
-        <span className="queue-title">{title}</span>
-        <span className="queue-artist">{artist}</span>
-      </div>
-      <PlatformBlip color={platform.color} prettyName={platform.prettyName} />
-      <span className="queue-total-length">{getTimeString(totalSeconds)}</span>
       <div className="queue-item-buttons">
         <button
           onClick={() => {
