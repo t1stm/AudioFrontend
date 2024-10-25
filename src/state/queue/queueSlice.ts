@@ -17,8 +17,8 @@ const queueSlice = createSlice({
   name: "queue",
   initialState: initialState,
   reducers: {
-    setCurrentIndex: (state, action: PayloadAction<{ index: number }>) => {
-      state.currentIndex = action.payload.index
+    setCurrentIndex: (state, action: PayloadAction<number>) => {
+      state.currentIndex = action.payload
     },
     addToQueue: (state, action: PayloadAction<QueueObject>) => {
       state.objects.push(action.payload)
@@ -38,10 +38,27 @@ const queueSlice = createSlice({
 
       state.currentIndex += 1
     },
+    setNext: (state, action: PayloadAction<number>) => {
+      const objects = state.objects
+      const targetIndex = action.payload
+
+      if (targetIndex === state.currentIndex ||
+        targetIndex >= objects.length ||
+        targetIndex < 0)
+        return
+
+      if (state.currentIndex > targetIndex)
+        state.currentIndex--
+
+      const removed = objects.splice(targetIndex, 1)
+      objects.splice(state.currentIndex + 1, 0, removed[0]) // [0] is asserted above by only getting one
+      state.objects = objects
+    }
   },
 })
 
 export const {
+  setNext,
   setCurrentIndex,
   addToQueue,
   shuffle,

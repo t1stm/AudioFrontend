@@ -8,10 +8,12 @@ interface QueueEntryProps {
   queueObject: QueueObject
   index: number
   isCurrent: boolean
+  setNext: (index: number) => void
+  skipTo: (index: number) => void
 }
 
 const QueueEntry: React.FC<QueueEntryProps> = (props: QueueEntryProps) => {
-  const { queueObject, index, isCurrent } = props
+  const { queueObject, index, isCurrent, setNext, skipTo } = props
   const { title, artist, totalSeconds, image, platform } = queueObject
 
   return (
@@ -27,8 +29,13 @@ const QueueEntry: React.FC<QueueEntryProps> = (props: QueueEntryProps) => {
       <PlatformBlip color={platform.color} prettyName={platform.prettyName} />
       <span className="queue-total-length">{getTimeString(totalSeconds)}</span>
       <div className="queue-item-buttons">
-        <button>Set Next</button>
-        <button>Skip To</button>
+        <button onClick={() => {
+          setNext(index)
+        }}>Set Next</button>
+
+        <button onClick={() => {
+          skipTo(index)
+        }}>Skip To</button>
       </div>
     </div>
   )
