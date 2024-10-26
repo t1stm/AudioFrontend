@@ -1,7 +1,7 @@
-export function shuffleArray(
-  objects: Array<any>,
+export function shuffleArray<T>(
+  objects: Array<T>,
   currentIndex: number,
-): Array<any> {
+): Array<T> {
   // do nothing if there are no objects in the queue
   if (objects.length < 1) return objects
 
