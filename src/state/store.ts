@@ -5,11 +5,13 @@ import { setupListeners } from "@reduxjs/toolkit/query"
 import playerReducer from "./player/playerSlice"
 import searchReducer from "./search/searchSlice"
 import queueReducer from "./queue/queueSlice"
+import settingsReducer from "./settings/settingsSlice"
 
 const rootReducer = combineReducers({
   player: playerReducer,
   search: searchReducer,
   queue: queueReducer,
+  settings: settingsReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>
