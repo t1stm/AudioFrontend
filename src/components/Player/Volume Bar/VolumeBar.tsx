@@ -48,7 +48,7 @@ const VolumeBar: React.FC<VolumeBarProps> = (props) => {
   }, [onChange])
 
   const handleWheel = useCallback((delta: number) => {
-    const step = delta / 1500;
+    const step = -delta / 1500;
     onChangeDelta(step);
   }, [onChangeDelta])
 
