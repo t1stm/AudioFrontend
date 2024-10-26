@@ -11,6 +11,7 @@ export interface PlayerState {
   bufferedSeconds: number
   seekToSeconds: number | null
   volume: number
+  muted: boolean
 }
 
 const defaultCurrent: QueueObject = {
@@ -35,7 +36,8 @@ const initialState: PlayerState = {
   currentSeconds: 0,
   bufferedSeconds: 0,
   seekToSeconds: null,
-  volume: 0.5,
+  volume: 1,
+  muted: false
 }
 
 const playerSlice = createSlice({
@@ -50,7 +52,12 @@ const playerSlice = createSlice({
         state.bufferedSeconds = action.payload.buffer
     },
     updateVolume: (state, action: PayloadAction<{ volume: number }>) => {
-      state.volume = action.payload.volume
+      state.volume = Math.min(Math.max(action.payload.volume, 0), 1)
+      state.muted = false
+    },
+    updateVolumeDelta: (state, action: PayloadAction<{delta: number}>) => {
+      state.volume += action.payload.delta
+      state.volume = Math.min(Math.max(state.volume, 0), 1)
     },
     setCurrent: (
       state,
@@ -75,6 +82,9 @@ const playerSlice = createSlice({
       state.playing = false
       state.currentSeconds = 0
     },
+    toggleMute: state => {
+      state.muted = !state.muted;
+    }
   },
 })
 
@@ -82,10 +92,12 @@ export const {
   updateTime,
   updateBuffer,
   updateVolume,
+  updateVolumeDelta,
   setPlaying,
   setCurrent,
   stop,
   seekTo,
-  seekOffset
+  seekOffset,
+  toggleMute
 } = playerSlice.actions
 export default playerSlice.reducer

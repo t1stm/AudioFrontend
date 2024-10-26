@@ -33,10 +33,3 @@ export const FLAC: CodecInfo = {
   type: 'audio/flac',
   goodBitrate: 1411
 }
-
-export type Codec =
-  | typeof Opus
-  | typeof AAC
-  | typeof Vorbis
-  | typeof MP3
-  | typeof FLAC

@@ -1,5 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { Codec, CodecInfo, Opus } from "../../objects/codecs"
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
+import type { CodecInfo} from "../../objects/codecs";
+import { Opus } from "../../objects/codecs"
 
 export interface SettingsState {
   currentCodec: CodecInfo,
@@ -17,13 +19,13 @@ const settingsSlice = createSlice({
   name: "search",
   initialState,
   reducers: {
-    setCodec: (state, action: PayloadAction<Codec>) => {
+    setCodec: (state, action: PayloadAction<CodecInfo>) => {
       state.currentCodec = action.payload
     },
     setBitrate: (state, action: PayloadAction<number>) => {
       state.bitrate = action.payload
     },
-    setSupportedCodecs: (state, action: PayloadAction<Codec[]>) => {
+    setSupportedCodecs: (state, action: PayloadAction<CodecInfo[]>) => {
       state.supportedCodecs = action.payload
     }
   },

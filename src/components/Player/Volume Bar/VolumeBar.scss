@@ -1,0 +1,29 @@
+@import "../../../colors";
+
+.volume-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.volume-box > svg {
+  color: $color-primary-a50;
+}
+
+.volume-bar {
+  position: absolute;
+  height: 50px;
+  outline: none;
+  width: 8px;
+  background-color: $color-surface-mixed-a20;
+  border-radius: 4px;
+  transform: translate(8px, -110%);
+}
+
+.volume-blip {
+  position: absolute;
+  background-color: $color-primary-a30;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  transform: translateY(4px);
+}

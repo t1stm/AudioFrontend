@@ -1,8 +1,9 @@
-import React from "react"
+import type React from "react"
 import type { SyntheticEvent } from "react"
 import { useRef } from "react"
 import { useEffect } from "react"
-import { CodecInfo, AAC, FLAC, MP3, Opus, Vorbis } from "../../objects/codecs"
+import type { CodecInfo } from "../../objects/codecs";
+import { AAC, FLAC, MP3, Opus, Vorbis } from "../../objects/codecs"
 import { useAppDispatch } from "../../state/hooks"
 import { setBitrate, setCodec, setSupportedCodecs } from "../../state/settings/settingsSlice"
 
@@ -11,6 +12,7 @@ interface AudioParams {
   playing: boolean | null
   seekTime: number | null
   volume: number
+  muted: boolean
   onTimeUpdate: (event: SyntheticEvent<HTMLAudioElement>) => void
   onCanPlayThrough: (event: SyntheticEvent<HTMLAudioElement>) => void
   onBuffer: (event: SyntheticEvent<HTMLAudioElement>) => void
@@ -22,6 +24,7 @@ export const Audio: React.FC<AudioParams> = ({
   playing,
   seekTime,
   volume,
+  muted,
   onTimeUpdate,
   onCanPlayThrough,
   onBuffer,
@@ -72,7 +75,7 @@ export const Audio: React.FC<AudioParams> = ({
     if (supportedCodecs.length < 1) return
     dispatch(setCodec(supportedCodecs[0]))
     dispatch(setBitrate(supportedCodecs[0].goodBitrate))
-  }, [ref.current, dispatch])
+  }, [dispatch])
 
   return (
     <audio
@@ -84,6 +87,7 @@ export const Audio: React.FC<AudioParams> = ({
       onCanPlayThrough={onCanPlayThrough}
       loop={false}
       onEnded={onEnded}
+      muted={muted}
     ></audio>
   )
 }

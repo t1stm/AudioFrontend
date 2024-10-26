@@ -55,6 +55,12 @@ input {
   font-weight: bold;
 }
 
+input[type=range] {
+  padding: 0;
+  border: none;
+  background: $color-surface-mixed-a20;
+}
+
 input:focus,
 input:hover,
 input:focus-within {

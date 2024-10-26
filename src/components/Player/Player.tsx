@@ -7,7 +7,7 @@ import {
   setCurrent,
   setPlaying,
   stop,
-  seekTo,
+  seekTo, updateVolume, updateVolumeDelta
 } from "../../state/player/playerSlice"
 
 import { previousTrack, nextTrack, shuffle } from "../../state/queue/queueSlice"
@@ -25,6 +25,7 @@ import nextImage from "/static/icons/next.png"
 import shuffleImage from "/static/icons/shuffle.png"
 import emptyImage from "/static/images/empty.png"
 import { useEffect } from "react"
+import VolumeBar from "./Volume Bar/VolumeBar"
 
 const Player = () => {
   const { queue, player } = useAppSelector((state: RootState) => {
@@ -50,6 +51,7 @@ const Player = () => {
         playing: state.player.playing,
         seekToSeconds: state.player.seekToSeconds,
         volume: state.player.volume,
+        muted: state.player.muted,
         currentIndex: state.player.currentIndex,
       },
     }
@@ -124,6 +126,13 @@ const Player = () => {
           }}
         ></PlayerProgressBar>
         <span className="time total-time">{totalTime}</span>
+        <VolumeBar
+          onChange={(e) => {
+            dispatch(updateVolume({ volume: e }))
+          }}
+          onChangeDelta={(e) => {
+            dispatch(updateVolumeDelta({ delta: e }))
+          }}/>
       </span>
 
       <div className="player-buttons">
@@ -156,6 +165,7 @@ const Player = () => {
         seekTime={player.seekToSeconds}
         url={player.url}
         volume={player.volume}
+        muted={player.muted}
         onTimeUpdate={event => {
           const player = event.currentTarget
           const time = player.currentTime
