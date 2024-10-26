@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
-import type { QueueObject } from "./queue"
+import type { QueueObject } from "../../objects/queueObject"
 
 export interface PlayerState {
   current: QueueObject

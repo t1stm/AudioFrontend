@@ -1,5 +1,5 @@
 import type React from "react"
-import type { QueueObject } from "../../state/player/queue"
+import type { QueueObject } from "../../objects/queueObject"
 import "./QueueEntry.scss"
 import { getTimeString } from "../../components/Player/PlayerViewUtils"
 import PlatformBlip from "../../components/Platform Blip/PlatformBlip"

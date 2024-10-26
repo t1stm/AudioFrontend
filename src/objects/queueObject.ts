@@ -1,4 +1,4 @@
-import type { PlatformInfo } from "../../pages/Search/SearchViewUtils"
+import type { PlatformInfo } from "../pages/Search/SearchViewUtils"
 
 export interface QueueObject {
   platform: PlatformInfo

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import type { QueueObject } from "../player/queue"
+import type { QueueObject } from "../../objects/queueObject"
 import { shuffleArray } from "./queueUtils"
 
 interface QueueState {
