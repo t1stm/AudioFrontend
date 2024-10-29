@@ -1,15 +1,16 @@
 import "./Settings.scss"
 
 import { useAppDispatch, useAppSelector } from "../../state/hooks"
-import { ChangeEvent, useCallback, useEffect } from "react"
-import { RootState } from "../../state/store"
-import { Codec, CodecInfo } from "../../objects/codecs"
+import type { ChangeEvent} from "react";
+import { useCallback } from "react"
+import type { RootState } from "../../state/store"
+import type { CodecInfo } from "../../objects/codecs"
 import { setCodec } from "../../state/settings/settingsSlice"
 
 const Settings = () => {
   const { supportedCodecs } = useAppSelector((state: RootState) => {
     return {
-      currentCodec: state.settings.currentCodec as Codec,
+      currentCodec: state.settings.currentCodec as CodecInfo,
       supportedCodecs: state.settings.supportedCodecs as CodecInfo[]
     }
   });
@@ -24,7 +25,7 @@ const Settings = () => {
 
     if (!codec) return
     dispatch(setCodec(codec))
-  }, []);
+  }, [dispatch, supportedCodecs]);
 
   return (
     <div>
