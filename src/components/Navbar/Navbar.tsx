@@ -11,10 +11,11 @@ const Navbar = () => {
       <CustomNavLink to="" linkText="Search" />
       <CustomNavLink to="/queue" linkText="Queue" />
       <CustomNavLink to="/settings" linkText="Settings" />
+      <CustomNavLink to="/rooms" linkText="Rooms" className="rooms-link" />
       {loggedIn ? (
         <UserProfile />
       ) : (
-        <CustomNavLink to="/login" linkText="Login" className="login-link" />
+        <CustomNavLink to="/login" linkText="Login" />
       )}
     </header>
   )

@@ -6,11 +6,13 @@ import playerReducer from "./player/playerSlice"
 import searchReducer from "./search/searchSlice"
 import queueReducer from "./queue/queueSlice"
 import settingsReducer from "./settings/settingsSlice"
+import roomReducer from "./rooms/roomSlice"
 
 const rootReducer = combineReducers({
   player: playerReducer,
   search: searchReducer,
   queue: queueReducer,
+  rooms: roomReducer,
   settings: settingsReducer
 })
 
