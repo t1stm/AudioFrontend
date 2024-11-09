@@ -26,6 +26,7 @@ import shuffleImage from "/static/icons/shuffle.png"
 import emptyImage from "/static/images/empty.png"
 import { useEffect } from "react"
 import VolumeBar from "./Volume Bar/VolumeBar"
+import PlayerSocket from "./Web Sockets/PlayerSocket"
 
 const Player = () => {
   const { queue, player } = useAppSelector((state: RootState) => {
@@ -159,6 +160,8 @@ const Player = () => {
         currentFormatted={currentTime}
         totalFormatted={totalTime}
       />
+
+      <PlayerSocket />
 
       <Audio
         playing={player.playing}

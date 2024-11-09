@@ -1,0 +1,10 @@
+@import "../../colors";
+
+.chat-message {
+  font-size: 14px;
+}
+
+.chat-sender {
+  color: $color-surface-mixed-a40;
+  font-weight: bold;
+}

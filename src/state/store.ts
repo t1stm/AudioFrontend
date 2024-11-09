@@ -7,13 +7,15 @@ import searchReducer from "./search/searchSlice"
 import queueReducer from "./queue/queueSlice"
 import settingsReducer from "./settings/settingsSlice"
 import roomReducer from "./rooms/roomSlice"
+import chatReducer from "./chat/chatSlice"
 
 const rootReducer = combineReducers({
   player: playerReducer,
   search: searchReducer,
   queue: queueReducer,
   rooms: roomReducer,
-  settings: settingsReducer
+  settings: settingsReducer,
+  chat: chatReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>

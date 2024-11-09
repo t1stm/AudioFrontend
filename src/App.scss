@@ -54,6 +54,9 @@ body {
 }
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   @include medium {
     margin-top: auto;
   }

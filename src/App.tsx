@@ -8,6 +8,7 @@ import Login from "./pages/Login/Login"
 import Queue from "./pages/Queue/Queue"
 import Settings from "./pages/Settings/Settings"
 import Rooms from "./pages/Rooms/Rooms"
+import Chat from "./components/Chat/Chat"
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         </div>
         <div className="sidebar">
           <Player />
+          <Chat />
         </div>
       </div>
     </BrowserRouter>
