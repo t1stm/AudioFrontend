@@ -7,7 +7,7 @@ import {
   setCurrent,
   setPlaying,
   stop,
-  seekTo, updateVolume, updateVolumeDelta
+  seekTo, updateVolume, updateVolumeDelta, setSynced
 } from "../../state/player/playerSlice"
 
 import { previousTrack, nextTrack, shuffle } from "../../state/queue/queueSlice"
@@ -27,11 +27,12 @@ import emptyImage from "/static/images/empty.png"
 import { useEffect } from "react"
 import VolumeBar from "./Volume Bar/VolumeBar"
 import PlayerSocket from "./Web Sockets/PlayerSocket"
+import playerService from "../../state/websockets/playerService"
 
 const Player = () => {
   const { queue, player } = useAppSelector((state: RootState) => {
     let image = state.player.current.image
-    if (image.length === 0) {
+    if (image?.length === 0) {
       image = emptyImage
     }
 
@@ -54,6 +55,7 @@ const Player = () => {
         volume: state.player.volume,
         muted: state.player.muted,
         currentIndex: state.player.currentIndex,
+        initialSync: state.player.initialSync
       },
     }
   })
@@ -74,33 +76,44 @@ const Player = () => {
         index: queue.currentIndex,
       }),
     )
+    dispatch(setSynced(false))
   }, [dispatch, queue.objects, queue.currentIndex, player.currentIndex])
 
   const buttons = [
     {
       name: "stop",
       imageUrl: stopImage,
-      clickAction: () => dispatch(stop()),
+      clickAction: () => playerService.isConnected() ?
+        playerService.send("stop")
+        : dispatch(stop()),
     },
     {
       name: "back",
       imageUrl: backImage,
-      clickAction: () => dispatch(previousTrack()),
+      clickAction: () => playerService.isConnected() ?
+        playerService.send("previous")
+        : dispatch(previousTrack()),
     },
     {
       name: player.playing ? "pause" : "play",
       imageUrl: player.playing ? pauseImage : playImage,
-      clickAction: () => dispatch(setPlaying(!player.playing)),
+      clickAction: () => playerService.isConnected() ?
+        playerService.send("playpause")
+        : dispatch(setPlaying(!player.playing)),
     },
     {
       name: "next",
       imageUrl: nextImage,
-      clickAction: () => dispatch(nextTrack()),
+      clickAction: () => playerService.isConnected() ?
+        playerService.send("next")
+        : dispatch(nextTrack()),
     },
     {
       name: "shuffle",
       imageUrl: shuffleImage,
-      clickAction: () => dispatch(shuffle()),
+      clickAction: () => playerService.isConnected() ?
+        playerService.send("shuffle")
+        : dispatch(shuffle()),
     },
   ]
 
@@ -123,7 +136,10 @@ const Player = () => {
           bufferedSeconds={player.bufferedSeconds}
           totalSeconds={player.totalSeconds}
           onClick={percentage => {
-            dispatch(seekTo(percentage * player.totalSeconds))
+            const time = percentage * player.totalSeconds;
+            playerService.isConnected() ?
+              playerService.send(`seek ${time}`)
+              : dispatch(seekTo(time))
           }}
         ></PlayerProgressBar>
         <span className="time total-time">{totalTime}</span>
@@ -185,9 +201,16 @@ const Player = () => {
         onCanPlayThrough={() => {
           dispatch(updateBuffer({ buffer: player.totalSeconds }))
         }}
+        onCanPlay={() => {
+          if (player.initialSync) return;
+          dispatch(setSynced(true))
+          playerService.isConnected() && playerService.send("sync")
+        }}
         onEnded={() => {
           console.log("Ended current audio.")
-          dispatch(nextTrack())
+          playerService.isConnected() ?
+            playerService.send("end")
+            : dispatch(nextTrack())
         }}
       />
     </div>

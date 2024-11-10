@@ -1,8 +1,10 @@
-import type React from "react"
+import type React from "react";
+import { useState } from "react"
 import "./Chat.scss"
 import { useAppSelector } from "../../state/hooks"
 import type { RootState } from "../../state/store"
 import ChatMessage from "./ChatMessage"
+import playerService from "../../state/websockets/playerService"
 
 const Chat: React.FC = () => {
   const { messages } = useAppSelector((state: RootState) => {
@@ -11,6 +13,7 @@ const Chat: React.FC = () => {
     }
   })
 
+  const [chatMessage, setChatMessage] = useState("")
   return (
     <div className="chat">
       <span>Chat</span>
@@ -20,8 +23,10 @@ const Chat: React.FC = () => {
         ))}
       </div>
       <div className="chat-input">
-        <input type="text" placeholder="Message..." />
-        <button>Send</button>
+        <input type="text" placeholder="Message..."
+               onChange={(e) => setChatMessage(e.target.value)}
+               onKeyUp={e => e.key === "Enter" && playerService.send(`chat ${chatMessage}`) } />
+        <button onClick={() => playerService.send(`chat ${chatMessage}`)}>Send</button>
       </div>
     </div>
   )

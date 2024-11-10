@@ -21,9 +21,15 @@ export const roomSlice = createSlice({
     },
     setRoom: (state, action: PayloadAction<RoomInfo>) => {
       state.currentRoom = action.payload
+    },
+    updateRoomInfo: (state, action: PayloadAction<{name: string | null, description: string | null}>) => {
+      if (state.currentRoom == null) return
+
+      state.currentRoom.name = action.payload.name ?? state.currentRoom.name
+      state.currentRoom.description = action.payload.description ?? state.currentRoom.description
     }
   }
 })
 
-export const { updateRooms, setRoom } = roomSlice.actions
+export const { updateRooms, setRoom, updateRoomInfo } = roomSlice.actions
 export default roomSlice.reducer

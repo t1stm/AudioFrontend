@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "../../state/hooks"
 import QueueEntry from "./QueueEntry"
 import "./Queue.scss"
 import { setCurrentIndex, setNext } from "../../state/queue/queueSlice"
-import { RootState } from "../../state/store"
+import type { RootState } from "../../state/store"
 
 const Queue = () => {
   const { objects, currentIndex } = useAppSelector((state: RootState) => {

@@ -23,6 +23,9 @@ const queueSlice = createSlice({
     addToQueue: (state, action: PayloadAction<QueueObject>) => {
       state.objects.push(action.payload)
     },
+    setQueue: (state, action: PayloadAction<QueueObject[]>) => {
+      state.objects = action.payload
+    },
     shuffle: state => {
       state.objects = shuffleArray(state.objects, state.currentIndex ?? 0)
     },
@@ -62,6 +65,7 @@ export const {
   setNext,
   setCurrentIndex,
   addToQueue,
+  setQueue,
   shuffle,
   previousTrack,
   nextTrack,

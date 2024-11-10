@@ -1,3 +1,11 @@
+import { BACKEND_DOWNLOAD_ENDPOINT } from "../../config"
+import type { SearchObject } from "../../state/search/searchObject"
+import type { QueueObject } from "../../objects/queueObject"
+import emptyImage from "/static/images/empty.png"
+
+let codec = "Opus"
+let bitrate = "192"
+
 export interface PlatformInfo {
   identifier: string
   prettyName: string
@@ -42,5 +50,35 @@ export function getPlatformNameFromIdentifier(id: string): PlatformInfo {
     identifier: identifier,
     prettyName: prettyName,
     color: color,
+  }
+}
+
+export function getThumbnail(thumbnail: string | null) {
+  return thumbnail !== null && thumbnail.length !== 0
+    ? thumbnail
+    : emptyImage
+}
+
+export function toQueueObject(object: SearchObject): QueueObject {
+  const platformInfo = getPlatformNameFromIdentifier(object.ID);
+  const thumbnail = getThumbnail(object.ThumbnailUrl);
+
+  return generateQueueObject(object, thumbnail, platformInfo);
+}
+
+export function generateQueueObject(
+  { Name, Artist, Duration, ID }: SearchObject,
+  thumbnail: string,
+  info: PlatformInfo,
+): QueueObject {
+  const randomHash = Math.random().toString(36).substring(2, 5)
+
+  return {
+    title: Name ?? "",
+    artist: Artist ?? "",
+    totalSeconds: convertTimeSpanStringToSeconds(Duration),
+    image: thumbnail,
+    url: `${BACKEND_DOWNLOAD_ENDPOINT}/${codec}/${bitrate}?id=${encodeURI(ID)}#random_hash=${randomHash}`,
+    platform: info,
   }
 }

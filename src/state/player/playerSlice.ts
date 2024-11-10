@@ -12,6 +12,7 @@ export interface PlayerState {
   seekToSeconds: number | null
   volume: number
   muted: boolean
+  initialSync: boolean
 }
 
 const defaultCurrent: QueueObject = {
@@ -37,7 +38,8 @@ const initialState: PlayerState = {
   bufferedSeconds: 0,
   seekToSeconds: null,
   volume: 1,
-  muted: false
+  muted: false,
+  initialSync: false,
 }
 
 const playerSlice = createSlice({
@@ -84,6 +86,9 @@ const playerSlice = createSlice({
     },
     toggleMute: state => {
       state.muted = !state.muted;
+    },
+    setSynced: (state, action: PayloadAction<boolean>) => {
+      state.initialSync = action.payload
     }
   },
 })
@@ -98,6 +103,7 @@ export const {
   stop,
   seekTo,
   seekOffset,
-  toggleMute
+  toggleMute,
+  setSynced
 } = playerSlice.actions
 export default playerSlice.reducer

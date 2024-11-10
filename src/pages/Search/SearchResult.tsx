@@ -3,17 +3,13 @@ import type { SearchObject } from "../../state/search/searchObject"
 import { useAppDispatch } from "../../state/hooks"
 import type { AppDispatch } from "../../state/store"
 import {
-  convertTimeSpanStringToSeconds,
-  getPlatformNameFromIdentifier,
+  generateQueueObject,
+  getPlatformNameFromIdentifier, getThumbnail
 } from "./SearchViewUtils"
 import "./SearchResult.scss"
 import PlatformBlip from "../../components/Platform Blip/PlatformBlip"
-import emptyImage from "/static/images/empty.png"
-import { BACKEND_DOWNLOAD_ENDPOINT } from "../../config"
 import { addToQueue } from "../../state/queue/queueSlice"
-
-let codec = "Opus"
-let bitrate = "192"
+import playerService from "../../state/websockets/playerService"
 
 export const SearchResult: React.FC<SearchObject> = ({
   ID,
@@ -25,11 +21,7 @@ export const SearchResult: React.FC<SearchObject> = ({
   const dispatch = useAppDispatch<AppDispatch>()
   const info = getPlatformNameFromIdentifier(ID)
 
-  const thumbnail =
-    ThumbnailUrl !== null && ThumbnailUrl.length !== 0
-      ? ThumbnailUrl
-      : emptyImage
-
+  const thumbnail = getThumbnail(ThumbnailUrl);
   return (
     <div key={ID} className="search-result">
       <img src={thumbnail} alt="Thumbnail" />
@@ -43,20 +35,18 @@ export const SearchResult: React.FC<SearchObject> = ({
       </div>
       <button
         onClick={() => {
+          if (playerService.isConnected()) {
+            playerService.send(`add ${ID}`)
+            return
+          }
+
           // when skipping between to identical entries in the queue,
           // the src isn't changed so the player doesn't reset the playback.
 
           // this fixes that without making new requests if caching is enabled
-          const random_hash = crypto.randomUUID()
+
           dispatch(
-            addToQueue({
-              title: Name ?? "",
-              artist: Artist ?? "",
-              totalSeconds: convertTimeSpanStringToSeconds(Duration),
-              image: thumbnail,
-              url: `${BACKEND_DOWNLOAD_ENDPOINT}/${codec}/${bitrate}?id=${encodeURI(ID)}#random_hash=${random_hash}`,
-              platform: info,
-            }),
+            addToQueue(generateQueueObject({ Album: null, ThumbnailUrl, Name, Artist, Duration, ID }, thumbnail, info)),
           )
         }}
       >

@@ -15,6 +15,7 @@ interface AudioParams {
   muted: boolean
   onTimeUpdate: (event: SyntheticEvent<HTMLAudioElement>) => void
   onCanPlayThrough: (event: SyntheticEvent<HTMLAudioElement>) => void
+  onCanPlay: (event: SyntheticEvent<HTMLAudioElement>) => void
   onBuffer: (event: SyntheticEvent<HTMLAudioElement>) => void
   onEnded: (event: SyntheticEvent<HTMLAudioElement>) => void
 }
@@ -27,11 +28,34 @@ export const Audio: React.FC<AudioParams> = ({
   muted,
   onTimeUpdate,
   onCanPlayThrough,
+  onCanPlay,
   onBuffer,
   onEnded,
 }) => {
   const ref = useRef<HTMLAudioElement | null>(null)
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (audioContextRef.current == null) {
+      audioContextRef.current = new AudioContext();
+    }
+    if (ref.current && audioContextRef.current) {
+      sourceNodeRef.current = audioContextRef.current.createMediaElementSource(ref.current);
+      sourceNodeRef.current.connect(audioContextRef.current.destination);
+    }
+
+    return () => {
+      if (sourceNodeRef.current) {
+        sourceNodeRef.current.disconnect();
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close().then();
+        audioContextRef.current = null;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (playing == null) return
@@ -79,12 +103,14 @@ export const Audio: React.FC<AudioParams> = ({
 
   return (
     <audio
+      crossOrigin="anonymous"
       ref={ref}
       src={url}
       autoPlay={playing ?? false}
       onTimeUpdate={onTimeUpdate}
       onProgress={onBuffer}
       onCanPlayThrough={onCanPlayThrough}
+      onCanPlay={onCanPlay}
       loop={false}
       onEnded={onEnded}
       muted={muted}
