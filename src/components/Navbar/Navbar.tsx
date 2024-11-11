@@ -9,14 +9,14 @@ const Navbar = () => {
     <header>
       <span>Audio API</span>
       <CustomNavLink to="" linkText="Search" />
-      <CustomNavLink to="/queue" linkText="Queue" />
-      <CustomNavLink to="/settings" linkText="Settings" />
-      <CustomNavLink to="/rooms" linkText="Rooms" className="rooms-link" />
-      <CustomNavLink to="/chat" linkText="Chat" className="chat-link" />
+      <CustomNavLink to={"/queue"} linkText="Queue" />
+      <CustomNavLink to={"/settings"} linkText="Settings" />
+      <CustomNavLink to={"/rooms"} linkText="Rooms" className="rooms-link" />
+      <CustomNavLink to={"/chat"} linkText="Chat" className="chat-link" />
       {loggedIn ? (
         <UserProfile />
       ) : (
-        <CustomNavLink to="/login" linkText="Login" />
+        <CustomNavLink to={"/login"} linkText="Login" />
       )}
     </header>
   )
