@@ -12,6 +12,7 @@ const Navbar = () => {
       <CustomNavLink to="/queue" linkText="Queue" />
       <CustomNavLink to="/settings" linkText="Settings" />
       <CustomNavLink to="/rooms" linkText="Rooms" className="rooms-link" />
+      <CustomNavLink to="/Chat" linkText="Chat" className="chat-link" />
       {loggedIn ? (
         <UserProfile />
       ) : (

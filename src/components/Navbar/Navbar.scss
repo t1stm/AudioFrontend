@@ -54,6 +54,13 @@ header > span {
   background: $color-primary-a10;
 }
 
+.chat-link {
+  display: none;
+  @include small {
+    display: block;
+  }
+}
+
 .rooms-link {
   margin-left: auto;
   @include small {

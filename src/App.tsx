@@ -19,14 +19,15 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Search />} />
             <Route path="/queue" element={<Queue />} />
-            <Route path="/rooms" element={<Rooms />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/rooms" element={<Rooms />} />
+            <Route path="/chat" element={<Chat standalone={true} />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>
         <div className="sidebar">
           <Player />
-          <Chat />
+          <Chat standalone={false} />
         </div>
       </div>
     </BrowserRouter>
