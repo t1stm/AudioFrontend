@@ -38,23 +38,11 @@ export const Audio: React.FC<AudioParams> = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (audioContextRef.current == null) {
-      audioContextRef.current = new AudioContext();
-    }
-    if (ref.current && audioContextRef.current) {
+    if (ref.current !== null) {
+      audioContextRef.current ??= new AudioContext()
       sourceNodeRef.current = audioContextRef.current.createMediaElementSource(ref.current);
       sourceNodeRef.current.connect(audioContextRef.current.destination);
     }
-
-    return () => {
-      if (sourceNodeRef.current) {
-        sourceNodeRef.current.disconnect();
-      }
-      if (audioContextRef.current) {
-        audioContextRef.current.close().then();
-        audioContextRef.current = null;
-      }
-    };
   }, []);
 
   useEffect(() => {
@@ -73,6 +61,9 @@ export const Audio: React.FC<AudioParams> = ({
     if (ref.current != null) ref.current.volume = volume
     console.log("Setting volume to: ", volume)
   }, [volume])
+
+  if (audioContextRef.current?.state === "suspended")
+    audioContextRef.current?.resume().then()
 
   useEffect(() => {
     if (ref.current == null) return
