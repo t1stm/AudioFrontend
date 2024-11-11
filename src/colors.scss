@@ -25,6 +25,12 @@ $box-shadow-generic:
   inset 10px 10px 10px -7px rgba(0, 0, 0, 0.17),
   10px 10px 10px -7px rgba(0, 0, 0, 0.17);
 
+span {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
 button {
   height: 100%;
   width: 80px;
