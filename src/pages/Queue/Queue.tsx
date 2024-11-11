@@ -3,6 +3,7 @@ import QueueEntry from "./QueueEntry"
 import "./Queue.scss"
 import { setCurrentIndex, setNext } from "../../state/queue/queueSlice"
 import type { RootState } from "../../state/store"
+import playerService from "../../state/websockets/playerService"
 
 const Queue = () => {
   const { objects, currentIndex } = useAppSelector((state: RootState) => {
@@ -23,10 +24,14 @@ const Queue = () => {
             index={index}
             isCurrent={index === currentIndex}
             setNext={index => {
-              dispatch(setNext(index))
+              playerService.isConnected() ?
+                playerService.send(`setnext ${index}`)
+                : dispatch(setNext(index))
             }}
             skipTo={index => {
-              dispatch(setCurrentIndex(index))
+              playerService.isConnected() ?
+                playerService.send(`skipto ${index}`)
+                : dispatch(setCurrentIndex(index))
             }}
           />
         ))}
