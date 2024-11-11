@@ -76,6 +76,7 @@
   box-shadow: $box-shadow-generic;
   @include small {
     aspect-ratio: 1;
+    object-fit: cover;
   }
 }
 
