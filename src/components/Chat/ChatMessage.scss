@@ -6,8 +6,8 @@
 
 .chat-message > span {
   user-select: unset;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  -webkit-user-select: unset;
+  -ms-user-select: unset;
 }
 
 .chat-sender {
