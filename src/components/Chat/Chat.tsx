@@ -25,7 +25,11 @@ const Chat: React.FC = () => {
       <div className="chat-input">
         <input type="text" placeholder="Message..."
                onChange={(e) => setChatMessage(e.target.value)}
-               onKeyUp={e => e.key === "Enter" && playerService.send(`chat ${chatMessage}`) } />
+               onKeyUp={e => {
+                 if (e.key !== "Enter" || chatMessage.trim() === "") return
+                 playerService.send(`chat ${chatMessage}`)
+                 e.currentTarget.value = ""
+               }} />
         <button onClick={() => playerService.send(`chat ${chatMessage}`)}>Send</button>
       </div>
     </div>

@@ -8,6 +8,8 @@
   padding: 10px;
   border-radius: 5px;
   gap: 10px;
+  min-height: 0;
+  height: 100%;
 }
 
 .chat > span {
@@ -20,12 +22,14 @@
   flex-direction: column;
 
   min-height: 250px;
+  height: 100%;
   width: 100%;
   gap: 5px;
 
   background: $color-surface-mixed-a0;
   border-radius: 5px;
   padding: 5px;
+  overflow: auto;
 }
 
 .chat-input {
