@@ -37,15 +37,15 @@ const Settings = () => {
 
   return (
     <div className={"settings"}>
-      <select onChange={codecSelect}>
+      <select onChange={codecSelect} value={currentCodec.name}>
         {supportedCodecs.map(c => (
-          <option key={c.name} value={c.name} selected={c.name === currentCodec.name}>{c.name}</option>
+          <option key={c.name} value={c.name}>{c.name}</option>
         ))}
       </select>
 
-      <select onChange={bitrateSelect}>
+      <select onChange={bitrateSelect} value={bitrate}>
         {BitRates.map(b => (
-          <option key={b} value={b} selected={bitrate === b}>{b}kbps</option>
+          <option key={b} value={b}>{b}kbps</option>
         ))}
       </select>
     </div>

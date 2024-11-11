@@ -1,4 +1,5 @@
-import type React from "react"
+import type React from "react";
+import { useCallback } from "react"
 import type { SearchObject } from "../../state/search/searchObject"
 import { useAppDispatch } from "../../state/hooks"
 import type { AppDispatch } from "../../state/store"
@@ -11,17 +12,28 @@ import PlatformBlip from "../../components/Platform Blip/PlatformBlip"
 import { addToQueue } from "../../state/queue/queueSlice"
 import playerService from "../../state/websockets/playerService"
 
-export const SearchResult: React.FC<SearchObject> = ({
-  ID,
-  Name,
-  Artist,
-  Duration,
-  ThumbnailUrl,
-}) => {
+export const SearchResult: React.FC<{object: SearchObject, bitrate: number, codec: string}> = ({object, bitrate, codec}) => {
+  const {
+    ID,
+    Name,
+    Artist,
+    Duration,
+    ThumbnailUrl,
+  } = object
+
   const dispatch = useAppDispatch<AppDispatch>()
   const info = getPlatformNameFromIdentifier(ID)
 
   const thumbnail = getThumbnail(ThumbnailUrl);
+  const addCallback = useCallback(() => {
+    if (playerService.isConnected()) {
+      playerService.send(`add ${ID}`)
+      return
+    }
+
+    dispatch(addToQueue(generateQueueObject(object, bitrate, codec, thumbnail, info)))
+  }, [ID, bitrate, codec, dispatch, info, object, thumbnail])
+
   return (
     <div key={ID} className="search-result">
       <img src={thumbnail} alt="Thumbnail" />
@@ -33,25 +45,7 @@ export const SearchResult: React.FC<SearchObject> = ({
         <PlatformBlip color={info.color} prettyName={info.prettyName} />
         <span className="result-duration">{Duration}</span>
       </div>
-      <button
-        onClick={() => {
-          if (playerService.isConnected()) {
-            playerService.send(`add ${ID}`)
-            return
-          }
-
-          // when skipping between to identical entries in the queue,
-          // the src isn't changed so the player doesn't reset the playback.
-
-          // this fixes that without making new requests if caching is enabled
-
-          dispatch(
-            addToQueue(generateQueueObject({ Album: null, ThumbnailUrl, Name, Artist, Duration, ID }, thumbnail, info)),
-          )
-        }}
-      >
-        Add to Queue
-      </button>
+      <button onClick={addCallback}>Add to Queue</button>
     </div>
   )
 }

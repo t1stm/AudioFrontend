@@ -3,9 +3,6 @@ import type { SearchObject } from "../../state/search/searchObject"
 import type { QueueObject } from "../../objects/queueObject"
 import emptyImage from "/static/images/empty.png"
 
-let codec = "Opus"
-let bitrate = "192"
-
 export interface PlatformInfo {
   identifier: string
   prettyName: string
@@ -59,18 +56,21 @@ export function getThumbnail(thumbnail: string | null) {
     : emptyImage
 }
 
-export function toQueueObject(object: SearchObject): QueueObject {
+export function toQueueObject(object: SearchObject, bitrate: number, codec: string): QueueObject {
   const platformInfo = getPlatformNameFromIdentifier(object.ID);
   const thumbnail = getThumbnail(object.ThumbnailUrl);
 
-  return generateQueueObject(object, thumbnail, platformInfo);
+  return generateQueueObject(object, bitrate, codec, thumbnail, platformInfo);
 }
 
 export function generateQueueObject(
-  { Name, Artist, Duration, ID }: SearchObject,
+  object: SearchObject,
+  bitrate: number,
+  codec: string,
   thumbnail: string,
   info: PlatformInfo,
 ): QueueObject {
+  const { Name, Artist, Duration, ID } = object;
   const randomHash = Math.random().toString(36).substring(2, 5)
 
   return {

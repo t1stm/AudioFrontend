@@ -13,9 +13,11 @@ import type { SearchObject } from "../../../state/search/searchObject"
 import { toQueueObject } from "../../../pages/Search/SearchViewUtils"
 
 const PlayerSocket: React.FC = () => {
-  const { currentRoom } = useAppSelector((state: RootState) => {
+  const { currentRoom, bitrate, codec } = useAppSelector((state: RootState) => {
     return {
-      currentRoom: state.rooms.currentRoom
+      currentRoom: state.rooms.currentRoom,
+      bitrate: state.settings.bitrate,
+      codec: state.settings.currentCodec.name,
     }
   });
 
@@ -81,13 +83,14 @@ const PlayerSocket: React.FC = () => {
         addChat(params)
         break
       case "queue":
-        dispatch(setQueue((JSON.parse(params) as SearchObject[]).map(search_object => toQueueObject(search_object))))
+        dispatch(setQueue((JSON.parse(params) as SearchObject[]).map(search_object =>
+          toQueueObject(search_object, bitrate, codec))))
         break
       case "current":
         dispatch(setCurrentIndex(JSON.parse(params) as number))
         break
     }
-  }, [dispatch, updateRoom, addChat])
+  }, [dispatch, updateRoom, addChat, bitrate, codec])
 
   useEffect(() => {
     if (currentRoom == null) {

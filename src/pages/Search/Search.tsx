@@ -6,9 +6,11 @@ import { searchAsync } from "../../state/search/searchSlice"
 import { SearchResult } from "./SearchResult"
 
 const Search = () => {
-  const { search } = useAppSelector((state: RootState) => {
+  const { search, bitrate, codec } = useAppSelector((state: RootState) => {
     return {
       search: state.search.objects ?? [],
+      bitrate: state.settings.bitrate,
+      codec: state.settings.currentCodec.name
     }
   })
   const dispatch = useAppDispatch<AppDispatch>()
@@ -26,7 +28,9 @@ const Search = () => {
         <button onClick={() => dispatch(searchAsync(keywords))}>Search</button>
       </div>
       <div className="search-results">
-        {search.map(result => SearchResult(result))}
+        {search.map(result => (
+          <SearchResult key={result.ID} object={result} codec={codec} bitrate={bitrate} />)
+        )}
       </div>
     </div>
   )

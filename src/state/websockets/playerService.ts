@@ -9,6 +9,11 @@ export class PlayerService {
 
     this.disconnect()
     this.socket = new WebSocket(`${BACKEND_MULTIPLAYER_WEBSOCKET}/Join?room=${roomId}`)
+    this.setOnMessage(onMessage)
+  }
+
+  setOnMessage(onMessage: (message: string) => void) {
+    if (!this.socket) return
     this.socket.onmessage = (e) => {
       onMessage(e.data as string)
     }
