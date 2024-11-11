@@ -20,7 +20,8 @@
 
   @include small {
     flex-direction: column;
-    height: fit-content;
+    font-size: 14px;
+    min-height: 140px;
   }
 }
 
