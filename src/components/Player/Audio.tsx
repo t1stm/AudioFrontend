@@ -15,7 +15,7 @@ interface AudioParams {
   muted: boolean
   onTimeUpdate: (event: SyntheticEvent<HTMLAudioElement>) => void
   onCanPlayThrough: (event: SyntheticEvent<HTMLAudioElement>) => void
-  onCanPlay: (event: SyntheticEvent<HTMLAudioElement>) => void
+  onLoadedData: (event: SyntheticEvent<HTMLAudioElement>) => void
   onBuffer: (event: SyntheticEvent<HTMLAudioElement>) => void
   onEnded: (event: SyntheticEvent<HTMLAudioElement>) => void
 }
@@ -28,7 +28,7 @@ export const Audio: React.FC<AudioParams> = ({
   muted,
   onTimeUpdate,
   onCanPlayThrough,
-  onCanPlay,
+  onLoadedData,
   onBuffer,
   onEnded,
 }) => {
@@ -59,8 +59,9 @@ export const Audio: React.FC<AudioParams> = ({
   }, [seekTime])
 
   useEffect(() => {
-    if (ref.current != null) ref.current.volume = volume
-    console.log("Setting volume to: ", volume)
+    const power = Math.pow(volume, 2)
+    if (ref.current != null) ref.current.volume = power
+    console.log("Setting volume to: ", volume, power)
   }, [volume])
 
   if (audioContextRef.current?.state === "suspended")
@@ -102,7 +103,7 @@ export const Audio: React.FC<AudioParams> = ({
       onTimeUpdate={onTimeUpdate}
       onProgress={onBuffer}
       onCanPlayThrough={onCanPlayThrough}
-      onCanPlay={onCanPlay}
+      onLoadedData={onLoadedData}
       loop={false}
       onEnded={onEnded}
       muted={muted}

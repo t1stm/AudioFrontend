@@ -199,12 +199,14 @@ const Player = () => {
           dispatch(updateBuffer({ buffer: end }))
         }}
         onCanPlayThrough={() => {
+          console.log("Can play through", Date.now())
           dispatch(updateBuffer({ buffer: player.totalSeconds }))
-        }}
-        onCanPlay={() => {
-          if (player.initialSync) return;
+          if (player.initialSync) return
           dispatch(setSynced(true))
           playerService.isConnected() && playerService.send("sync")
+        }}
+        onLoadedData={() => {
+          playerService.isConnected() && playerService.send("loaded")
         }}
         onEnded={() => {
           console.log("Ended current audio.")
