@@ -18,8 +18,8 @@ const Chat: React.FC = () => {
     <div className="chat">
       <span>Chat</span>
       <div className="chat-inner">
-        {messages.map((message) => (
-          <ChatMessage sender={message.sender} message={message.text} />
+        {messages.map((message, index) => (
+          <ChatMessage key={index} sender={message.sender} message={message.text} />
         ))}
       </div>
       <div className="chat-input">
