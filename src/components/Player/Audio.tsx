@@ -40,6 +40,7 @@ export const Audio: React.FC<AudioParams> = ({
   useEffect(() => {
     if (ref.current !== null) {
       audioContextRef.current ??= new AudioContext()
+      sourceNodeRef.current?.disconnect();
       sourceNodeRef.current = audioContextRef.current.createMediaElementSource(ref.current);
       sourceNodeRef.current.connect(audioContextRef.current.destination);
     }
