@@ -3,6 +3,7 @@ import { useRef, useEffect } from "react"
 import { useAppDispatch } from "../../../state/hooks"
 import { seekOffset, seekTo, setPlaying, stop } from "../../../state/player/playerSlice"
 import { nextTrack, previousTrack } from "../../../state/queue/queueSlice"
+import playerService from "../../../state/websockets/playerService"
 
 interface InfoUpdaterProps {
   title: string
@@ -63,23 +64,35 @@ const MediaSession: React.FC<InfoUpdaterProps> = ({
     if (!("mediaSession" in navigator)) return
     const actions = {
       "play": () => {
-        dispatch(setPlaying(true))
+        playerService.isConnected() ?
+          playerService.send("playpause")
+          : dispatch(setPlaying(true))
       },
       "pause": () => {
-        dispatch(setPlaying(false))
+        playerService.isConnected() ?
+          playerService.send("playpause")
+          : dispatch(setPlaying(false))
       },
       "stop": () => {
-        dispatch(stop())
+        playerService.isConnected() ?
+          playerService.send("stop")
+          : dispatch(stop())
       },
       "nexttrack": () => {
-        dispatch(nextTrack())
+        playerService.isConnected() ?
+          playerService.send("next")
+          : dispatch(nextTrack())
       },
       "previoustrack": () => {
-        dispatch(previousTrack())
+        playerService.isConnected() ?
+          playerService.send("previous")
+          : dispatch(previousTrack())
       },
       "seekto": (details: MediaSessionActionDetails) => {
         if (!details.seekTime) return
-        dispatch(seekTo(details.seekTime))
+        playerService.isConnected() ?
+          playerService.send(`seek ${details.seekTime}`)
+          : dispatch(seekTo(details.seekTime))
       },
       "seekforward": (details: MediaSessionActionDetails) => {
         dispatch(seekOffset(details.seekOffset || 5))
