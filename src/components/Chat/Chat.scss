@@ -11,14 +11,14 @@
   min-height: 0;
   height: 100%;
 
-  @include small {
+  @include medium {
     display: none;
   }
 }
 
 .chat-standalone {
   width: 100%;
-  @include small {
+  @include medium {
     display: flex;
   }
 }

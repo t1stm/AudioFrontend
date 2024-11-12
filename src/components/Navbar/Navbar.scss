@@ -56,7 +56,7 @@ header > span {
 
 .chat-link {
   display: none;
-  @include small {
+  @include medium {
     display: block;
   }
 }
