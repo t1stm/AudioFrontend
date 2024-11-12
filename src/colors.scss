@@ -67,6 +67,18 @@ input[type=range] {
   background: $color-surface-mixed-a20;
 }
 
+select {
+  appearance: none;
+  border: $color-surface-mixed-a20 3px solid;
+  outline: none;
+  padding: 8px;
+
+  background: $color-surface-mixed-a10;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+
 input:focus,
 input:hover,
 input:focus-within {
