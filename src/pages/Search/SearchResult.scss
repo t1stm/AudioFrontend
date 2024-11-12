@@ -27,6 +27,9 @@
   text-overflow: ellipsis;
   @include small {
     font-size: 13px;
+    line-height: 1em;
+    max-height: 3em;
+    overflow: hidden;
   }
 }
 
