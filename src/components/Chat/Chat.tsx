@@ -41,7 +41,8 @@ const Chat: React.FC<ChatProps> = ({ standalone }: ChatProps) => {
             e.currentTarget.value = ""
           }}
         />
-        <button onClick={() => playerService.send(`chat ${chatMessage}`)}>
+        <button disabled={!playerService.isConnected()}
+                onClick={() => playerService.isConnected() && playerService.send(`chat ${chatMessage}`)}>
           Send
         </button>
       </div>

@@ -84,6 +84,11 @@ select {
   cursor: pointer;
 }
 
+button:disabled {
+  background: $color-surface-mixed-a20 !important;
+  cursor: not-allowed;
+}
+
 input:disabled,
 select:disabled {
   cursor: not-allowed;
