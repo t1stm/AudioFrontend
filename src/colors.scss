@@ -81,6 +81,14 @@ select {
   border-radius: 5px;
   color: white;
   font-weight: bold;
+  cursor: pointer;
+}
+
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+  background: $color-surface-mixed-a0;
+  border: $color-surface-mixed-a10 3px solid;
 }
 
 input:focus,
