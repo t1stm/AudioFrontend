@@ -10,9 +10,10 @@ import "./Rooms.scss"
 import roomsService from "../../state/websockets/roomsService"
 
 const Rooms: React.FC = () => {
-  const { rooms } = useAppSelector((state: RootState) => {
+  const { rooms, current } = useAppSelector((state: RootState) => {
     return {
-      rooms: state.rooms.rooms
+      rooms: state.rooms.rooms,
+      current: state.rooms.currentRoom
     }
   });
 
@@ -40,11 +41,21 @@ const Rooms: React.FC = () => {
   return (
     <div className="rooms-section">
       <div className="rooms-bar">
-        <input type="text" className="rooms-search" placeholder="Search rooms..." />
+        <input
+          type="text"
+          className="rooms-search"
+          placeholder="Search rooms..."
+        />
         <button onClick={createCallback}>Create Room</button>
       </div>
       <div className="rooms-list">
-        {rooms.map(r => <Room key={r.roomID} room={r} />)}
+        {rooms.map(r => (
+          <Room
+            key={r.roomID}
+            room={r}
+            isCurrent={r.roomID === current?.roomID}
+          />
+        ))}
       </div>
     </div>
   )

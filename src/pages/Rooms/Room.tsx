@@ -7,9 +7,10 @@ import { setRoom } from "../../state/rooms/roomSlice"
 
 interface RoomProps {
   room: RoomInfo
+  isCurrent: boolean
 }
 
-const Room: React.FC<RoomProps> = ({ room }) => {
+const Room: React.FC<RoomProps> = ({ room, isCurrent }) => {
   const dispatch = useAppDispatch()
 
   const join = useCallback(() => {
@@ -28,7 +29,7 @@ const Room: React.FC<RoomProps> = ({ room }) => {
           <span>{room.description}</span>
         </span>
       </div>
-      <button className="room-join-button" onClick={join}>Join</button>
+      <button className="room-join-button" disabled={isCurrent} onClick={join}>{isCurrent ? "Connected" : "Join"}</button>
     </div>
   )
 }
