@@ -27,14 +27,14 @@ const PlayerSocket: React.FC = () => {
     switch (room.command as RoomCommand) {
       case "name":
         dispatch(updateRoomInfo({
-          name: room.params,
+          name: room.params?.trim() ?? null,
           description: null
         }))
         break;
       case "description":
         dispatch(updateRoomInfo({
           name: null,
-          description: room.params
+          description: room.params?.trim() ?? null
         }))
         break;
     }
