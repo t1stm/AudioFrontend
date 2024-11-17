@@ -57,8 +57,8 @@ const MediaSession: React.FC<InfoUpdaterProps> = ({
 
   useEffect(() => {
     if (!("title" in document)) return
-    document.title = `[Audio Player]: (${currentFormatted}) ${title} - ${artist}`
-  }, [title, artist, currentFormatted])
+    document.title = `${title} - ${artist} - Audio Player`
+  }, [title, artist])
 
   useEffect(() => {
     if (!("mediaSession" in navigator)) return
