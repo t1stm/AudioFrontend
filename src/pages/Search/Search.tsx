@@ -4,6 +4,7 @@ import type { AppDispatch, RootState } from "../../state/store"
 import { useState } from "react"
 import { searchAsync } from "../../state/search/searchSlice"
 import { SearchResult } from "./SearchResult"
+import SearchEmpty from "./SearchEmpty"
 
 const Search = () => {
   const { search, bitrate, codec } = useAppSelector((state: RootState) => {
@@ -28,7 +29,10 @@ const Search = () => {
         <button onClick={() => dispatch(searchAsync(keywords))}>Search</button>
       </div>
       <div className="search-results">
-        {search.map(result => (
+        {
+          search.length < 1 ?
+          <SearchEmpty />
+          : search.map(result => (
           <SearchResult key={result.ID} object={result} codec={codec} bitrate={bitrate} />)
         )}
       </div>

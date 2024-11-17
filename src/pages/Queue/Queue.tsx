@@ -4,6 +4,7 @@ import "./Queue.scss"
 import { setCurrentIndex, setNext } from "../../state/queue/queueSlice"
 import type { RootState } from "../../state/store"
 import playerService from "../../state/websockets/playerService"
+import EmptyQueue from "./EmptyQueue"
 
 const Queue = () => {
   const { objects, currentIndex } = useAppSelector((state: RootState) => {
@@ -17,7 +18,10 @@ const Queue = () => {
   return (
     <div className="queue">
       <div className="queue-entries">
-        {objects.map((entry, index) => (
+        {
+          objects.length < 1 ?
+          <EmptyQueue />
+          : objects.map((entry, index) => (
           <QueueEntry
             key={entry.url}
             queueObject={entry}
