@@ -38,7 +38,7 @@ const Chat: React.FC<ChatProps> = ({ standalone }: ChatProps) => {
           onKeyUp={e => {
             if (e.key !== "Enter" || chatMessage.trim() === "") return
             playerService.send(`chat ${chatMessage}`)
-            e.currentTarget.value = ""
+            setChatMessage(e.currentTarget.value = "")
           }}
         />
         <button disabled={!playerService.isConnected()}
