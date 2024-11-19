@@ -7,7 +7,7 @@ const Navbar = () => {
 
   return (
     <header>
-      <span>Audio API</span>
+      <span>Still In Development</span>
       <CustomNavLink to="" linkText="Search" />
       <CustomNavLink to={"/queue"} linkText="Queue" />
       <CustomNavLink to={"/settings"} linkText="Settings" />
